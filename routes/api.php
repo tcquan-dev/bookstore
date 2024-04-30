@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +22,15 @@ Route::group([
     Route::controller(AuthController::class)->group(function () {
         Route::post('register', 'register');
         Route::post('login', 'login');
+    });
+});
+
+Route::group([
+    'middleware' => 'jwt.auth'
+], function () {
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('profiles', 'getProfile');
+        Route::put('profiles', 'updateProfile');
+        Route::patch('profiles', 'updateProfile');
     });
 });

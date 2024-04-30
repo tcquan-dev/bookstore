@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequest;
+use App\Models\Profile;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -18,11 +19,12 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
-        /**
+    /**
      * Create a new account.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -30,11 +32,16 @@ class AuthController extends Controller
     public function register(AuthRequest $request)
     {
         try {
-            User::create([
+            $user = User::create([
                 'name' => $request->post('name'),
                 'email' => $request->post('email'),
                 'password' => Hash::make($request->post('password'))
             ]);
+
+            Profile::create([
+                'user_id' => $user->id
+            ]);
+            
             return response()->json([
                 'status' => 'success',
                 'message' => 'Tạo tài khoản thành công!',
