@@ -79,4 +79,37 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Get a JWT given credentials.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login(Request $request)
+    {
+        $credentials = array(
+            'email' => $request->post('email'),
+            'password' => $request->post('password'),
+        );
+
+        try {
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Sai email hoặc mật khẩu!'
+                ], 422);
+            }
+        } catch (JWTException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Đăng nhập thành công!',
+            'token' => $token
+        ]);
+    }
 }
