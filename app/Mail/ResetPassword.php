@@ -8,9 +8,8 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Hash;
 
-class UserVerification extends Mailable
+class ResetPassword extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -29,7 +28,7 @@ class UserVerification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Xác thực tài khoản của bạn',
+            subject: 'Đặt lại mật khẩu',
         );
     }
 
@@ -39,7 +38,7 @@ class UserVerification extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mails.verify',
+            markdown: 'mails.reset_password',
         );
     }
 
@@ -50,8 +49,6 @@ class UserVerification extends Mailable
      */
     public function attachments(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 }

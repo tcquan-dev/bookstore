@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('verifications', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->string('code');
+            $table->string('token');
             $table->dateTime('expired_in');
             $table->timestamps();
         });
