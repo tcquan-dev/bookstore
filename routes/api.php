@@ -24,6 +24,7 @@ Route::group([
         Route::post('register', 'register');
         Route::post('login', 'login');
         Route::get('verify/{code}', 'verify');
+        Route::post('password/reset', 'resetPassword')->name('password.reset');
     });
 });
 

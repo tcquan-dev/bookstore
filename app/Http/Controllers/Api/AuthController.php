@@ -7,10 +7,12 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequest;
+use App\Mail\ResetPassword;
 use App\Mail\UserVerification;
 use App\Models\Verification;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -32,16 +34,16 @@ class AuthController extends Controller
                 'password' => Hash::make($request->post('password'))
             ]);
 
-            $code = rand(0000000, 999999);
+            $token = Password::createToken($user);
 
-            Verification::create([
+            $verification = Verification::create([
                 'user_id' => $user->id,
-                'code' =>  $code,
+                'token' =>  $token,
                 'expired_in' => now()->addMinutes(60)
             ]);
 
-            Mail::to($user->email)->send(new UserVerification($code));
-
+            Mail::to($user->email)->send(new UserVerification($token));
+            $verification->delete();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Đăng ký thành công, hãy kiểm tra hộp thư để xác thực tài khoản của bạn!'
@@ -54,10 +56,10 @@ class AuthController extends Controller
         }
     }
 
-    public function verify($code)
+    public function verify($token)
     {
         try {
-            $verification = Verification::where([['code', $code], ['expired_in', '>', now()]])->first();
+            $verification = Verification::where([['token', $token], ['expired_in', '>', now()]])->first();
             if ($verification) {
                 $user = User::findOrFail($verification->user_id);
                 $user->update([
@@ -111,5 +113,33 @@ class AuthController extends Controller
             'message' => 'Đăng nhập thành công!',
             'token' => $token
         ]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        try {
+            $request->validate(['email' => 'required|email']);
+            $user = User::where('email', $request->post('email'))->first();
+
+            $token = Password::createToken($user);
+
+            $verification = Verification::create([
+                'user_id' => $user->id,
+                'token' =>  $token,
+                'expired_in' => now()->addMinutes(60)
+            ]);
+
+            Mail::to($user->email)->send(new ResetPassword($token));
+            $verification->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Hãy kiểm tra hộp thư để tiến hành đặt lại mật khẩu của bạn!'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }
