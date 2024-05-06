@@ -15,12 +15,11 @@ class ProfileCollection extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'user_id' => $this->user_id,
+            'name' => $this->name,
             'avatar' => $this->avatar ?? '',
-            'gender' => $this->gender,
+            'gender' => intval($this->gender),
             'phone_number' => $this->phone_number ?? '',
-            'address' => $this-> address ?? '',
+            'address' => $this->address ?? '',
             'bio' => $this->bio ?? ''
         ];
     }

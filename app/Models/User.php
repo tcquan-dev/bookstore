@@ -2,17 +2,25 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject
 {
+    use CrudTrait;
     use HasApiTokens, HasFactory, Notifiable;
+
+    protected $table = 'users';
+    protected $guarded = ['id'];
 
     /**
      * The attributes that are mass assignable.
@@ -20,9 +28,12 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
+        'role_id',
         'name',
         'email',
         'password',
+        'email_verified_at',
+        'active'
     ];
 
     /**
@@ -71,5 +82,51 @@ class User extends Authenticatable implements JWTSubject
     public function profile(): HasOne
     {
         return $this->hasOne(Profile::class);
+    }
+
+    /**
+     * Get the delivery address associated with the user.
+     */
+    public function deliveryAddresses(): HasMany
+    {
+        return $this->hasMany(DeliveryAddress::class);
+    }
+
+    /**
+     * Get the profile associated with the user.
+     */
+    public function carts(): HasMany
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    /**
+     * Get the profile associated with the user.
+     */
+    public function books(): BelongsToMany
+    {
+        return $this->belongsToMany(Book::class, 'carts');
+    }
+
+    /**
+     * Get the role associated with the user.
+     */
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function hasRole($role)
+    {
+        if ($role == $this->role->name)
+            return true;
+    }
+
+    public function assignRole($name)
+    {
+        $role = Role::where('name', $name)->first();
+        return $this->update([
+            'role_id' => $role->id
+        ]);
     }
 }
