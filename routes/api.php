@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\DeliveryAddressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,12 +18,12 @@ use App\Http\Controllers\ProfileController;
 */
 
 Route::group([
-    'middleware' => 'api',
     'prefix' => 'auth'
 ], function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('register', 'register');
         Route::post('login', 'login');
+        Route::get('verify/{code}', 'verify');
     });
 });
 
@@ -30,7 +32,8 @@ Route::group([
 ], function () {
     Route::controller(ProfileController::class)->group(function () {
         Route::get('profiles', 'getProfile');
-        Route::put('profiles', 'updateProfile');
-        Route::patch('profiles', 'updateProfile');
+        Route::match(['put', 'patch'], 'profiles', [ProfileController::class, 'updateProfile']);
     });
+    Route::resource('delivery_addresses', DeliveryAddressController::class);
+    Route::resource('carts', CartController::class);
 });
