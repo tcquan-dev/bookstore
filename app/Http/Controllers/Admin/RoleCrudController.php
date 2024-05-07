@@ -29,6 +29,7 @@ class RoleCrudController extends CrudController
         CRUD::setModel(\App\Models\Role::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/role');
         CRUD::setEntityNameStrings('role', 'roles');
+        $this->setupListOperation();
     }
 
     /**
@@ -40,7 +41,11 @@ class RoleCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::setFromDb(); // set columns from db columns.
-
+        CRUD::column([
+            'type'      => 'select',
+            'name'      => 'permissions',
+            'entity'    => 'permissions',
+        ]);
         /**
          * Columns can be defined using the fluent syntax:
          * - CRUD::column('price')->type('number');
@@ -57,6 +62,15 @@ class RoleCrudController extends CrudController
     {
         CRUD::setValidation(RoleRequest::class);
         CRUD::setFromDb(); // set fields from db columns.
+        CRUD::addField([
+            'label'     => "Permissions",
+            'type'      => 'select_multiple',
+            'name'      => 'permissions',
+            'entity'    => 'permissions', // the method that defines the relationship in your Model
+            'model'     => "App\Models\Permission", // foreign key model
+            'attribute' => 'name', // foreign key attribute that is shown to user
+            'pivot'     => true, // on create&update, do you need to add/delete pivot table entries?
+        ]);
 
         /**
          * Fields can be defined using the fluent syntax:

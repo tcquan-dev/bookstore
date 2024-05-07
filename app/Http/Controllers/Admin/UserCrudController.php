@@ -59,13 +59,11 @@ class UserCrudController extends CrudController
     {
         CRUD::setValidation(UserRequest::class);
         CRUD::setFromDb(); // set fields from db columns.
-
+        CRUD::field('role_id')->type('select')->model('App\Models\Role')->attribute('name')->entity('role');
         /**
          * Fields can be defined using the fluent syntax:
          * - CRUD::field('price')->type('number');
          */
-        CRUD::removeField('password');
-        CRUD::field('role_id')->type('select')->model('App\Models\Role')->attribute('name')->entity('role');
     }
 
     /**
@@ -77,5 +75,6 @@ class UserCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+        CRUD::removeField('password');
     }
 }
