@@ -36,14 +36,14 @@ class AuthController extends Controller
 
             $token = Password::createToken($user);
 
-            $verification = Verification::create([
+            Verification::create([
                 'user_id' => $user->id,
                 'token' =>  $token,
                 'expired_in' => now()->addMinutes(60)
             ]);
 
             Mail::to($user->email)->send(new UserVerification($token));
-            $verification->delete();
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Đăng ký thành công, hãy kiểm tra hộp thư để xác thực tài khoản của bạn!'
@@ -118,7 +118,9 @@ class AuthController extends Controller
     public function resetPassword(Request $request)
     {
         try {
-            $request->validate(['email' => 'required|email']);
+            $request->validate([
+                'email' => 'required|email'
+            ]);
             $user = User::where('email', $request->post('email'))->first();
 
             $token = Password::createToken($user);
