@@ -36,14 +36,14 @@ class AuthController extends Controller
 
             $token = Password::createToken($user);
 
-            $verification = Verification::create([
+            Verification::create([
                 'user_id' => $user->id,
                 'token' =>  $token,
                 'expired_in' => now()->addMinutes(60)
             ]);
 
             Mail::to($user->email)->send(new UserVerification($token));
-            $verification->delete();
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Đăng ký thành công, hãy kiểm tra hộp thư để xác thực tài khoản của bạn!'
@@ -118,7 +118,9 @@ class AuthController extends Controller
     public function resetPassword(Request $request)
     {
         try {
-            $request->validate(['email' => 'required|email']);
+            $request->validate([
+                'email' => 'required|email'
+            ]);
             $user = User::where('email', $request->post('email'))->first();
 
             $token = Password::createToken($user);
@@ -136,6 +138,44 @@ class AuthController extends Controller
                 'message' => 'Hãy kiểm tra hộp thư để tiến hành đặt lại mật khẩu của bạn!'
             ]);
         } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function changePassword(Request $request) {
+        try {
+            $user = JWTAuth::parseToken($request->bearerToken())->authenticate();
+            $request->validate([
+                'old_password' => 'required',
+                'new_password' => 'required|string|min:8',
+                'confirm_password' => 'required|string|min:8|same:new_password'
+            ]);
+            $user->update([
+                'password' => Hash::make($request->post('new_password'))
+            ]);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Cập nhật mật khẩu thành công!'
+            ]);
+        } catch (JWTException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function logout() {
+        try {
+            auth('api')->logout();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Đăng xuất thành công!'
+            ]);
+        } catch (JWTException $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
