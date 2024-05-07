@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\DeliveryAddressController;
 */
 
 Route::group([
+    'middleware' => 'api',
     'prefix' => 'auth'
 ], function () {
     Route::controller(AuthController::class)->group(function () {
@@ -25,6 +26,7 @@ Route::group([
         Route::post('login', 'login');
         Route::get('verify/{code}', 'verify');
         Route::post('password/reset', 'resetPassword')->name('password.reset');
+        Route::post('password/change', 'changePassword');
     });
 });
 
