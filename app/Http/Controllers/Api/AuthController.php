@@ -167,4 +167,19 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+    public function logout() {
+        try {
+            auth('api')->logout();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Đăng xuất thành công!'
+            ]);
+        } catch (JWTException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
