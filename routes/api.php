@@ -31,13 +31,9 @@ Route::group([
     });
 });
 
-Route::group([
-    'middleware' => 'jwt.auth'
-], function () {
-    Route::controller(ProfileController::class)->group(function () {
-        Route::get('profiles', 'getProfile');
-        Route::match(['put', 'patch'], 'profiles', [ProfileController::class, 'updateProfile']);
-    });
-    Route::resource('delivery_addresses', DeliveryAddressController::class);
-    Route::resource('carts', CartController::class);
+Route::controller(ProfileController::class)->group(function () {
+    Route::get('profiles', 'getProfile');
+    Route::post('profiles', 'updateProfile');
 });
+Route::resource('delivery_addresses', DeliveryAddressController::class);
+Route::resource('carts', CartController::class);
