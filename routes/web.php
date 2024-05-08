@@ -13,5 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', '/admin');
+Route::get('/', function () {
+    return view('home');
+})->name('home');
+
 Route::redirect('/home', '/admin');

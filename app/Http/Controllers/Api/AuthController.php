@@ -58,27 +58,17 @@ class AuthController extends Controller
 
     public function verify($token)
     {
-        try {
-            $verification = Verification::where([['token', $token], ['expired_in', '>', now()]])->first();
-            if ($verification) {
-                $user = User::findOrFail($verification->user_id);
-                $user->update([
-                    'email_verified_at' => now(),
-                    'active' => true
-                ]);
-                $verification->delete();
-                return redirect('/admin/login');
-            } else {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Liên kết kích hoạt đã hết hạn!'
-                ]);
-            }
-        } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
+        $verification = Verification::where([['token', $token], ['expired_in', '>', now()]])->first();
+        if ($verification) {
+            $user = User::findOrFail($verification->user_id);
+            $user->update([
+                'email_verified_at' => now(),
+                'active' => true
+            ]);
+            $verification->delete();
+            return redirect('/admin/login');
+        } else {
+            abort(404);
         }
     }
 
@@ -99,6 +89,15 @@ class AuthController extends Controller
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Sai email hoặc mật khẩu!'
+                ], 422);
+            }
+
+            $user = JWTAuth::user();
+
+            if (!$user->hasVerifiedEmail()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Vui lòng xác minh email của bạn trước khi đăng nhập!'
                 ], 422);
             }
         } catch (JWTException $e) {
@@ -145,7 +144,8 @@ class AuthController extends Controller
         }
     }
 
-    public function changePassword(Request $request) {
+    public function changePassword(Request $request)
+    {
         try {
             $user = JWTAuth::parseToken($request->bearerToken())->authenticate();
             $request->validate([
@@ -168,7 +168,8 @@ class AuthController extends Controller
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         try {
             auth('api')->logout();
             return response()->json([
