@@ -55,11 +55,7 @@ class CheckIfAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (backpack_auth()->guest()) {
-            return $this->respondToUnauthorizedRequest($request);
-        }
-
-        if (! $this->checkIfUserIsAdmin(backpack_user())) {
+        if (backpack_auth()->guest() || ! $this->checkIfUserIsAdmin(backpack_user())) {
             return $this->respondToUnauthorizedRequest($request);
         }
 

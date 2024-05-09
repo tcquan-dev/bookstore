@@ -256,65 +256,18 @@
                   </a>
                 </li>
                 <li class="pe-3">
-                  <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  <div class="dropdown">
+                    <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <svg class="user">
                       <use xlink:href="#user"></use>
                     </svg>
-                  </a>
-                  <!-- Modal -->
-                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header border-bottom-0">
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <div class="tabs-listing">
-                            <nav>
-                              <div class="nav nav-tabs d-flex justify-content-center" id="nav-tab" role="tablist">
-                                <button class="nav-link text-capitalize active" id="nav-sign-in-tab" data-bs-toggle="tab" data-bs-target="#nav-sign-in" type="button" role="tab" aria-controls="nav-sign-in" aria-selected="true">Sign In</button>
-                                <button class="nav-link text-capitalize" id="nav-register-tab" data-bs-toggle="tab" data-bs-target="#nav-register" type="button" role="tab" aria-controls="nav-register" aria-selected="false">Register</button>
-                              </div>
-                            </nav>
-                            <div class="tab-content" id="nav-tabContent">
-                              <div class="tab-pane fade active show" id="nav-sign-in" role="tabpanel" aria-labelledby="nav-sign-in-tab">
-                                <div class="form-group py-3">
-                                  <label class="mb-2" for="sign-in">Username or email address *</label>
-                                  <input type="text" minlength="2" name="username" placeholder="Your Username" class="form-control w-100 rounded-3 p-3" required>
-                                </div>
-                                <div class="form-group pb-3">
-                                  <label class="mb-2" for="sign-in">Password *</label>
-                                  <input type="password" minlength="2" name="password" placeholder="Your Password" class="form-control w-100 rounded-3 p-3" required>
-                                </div>
-                                <label class="py-3">
-                                  <input type="checkbox" required="" class="d-inline">
-                                  <span class="label-body">Remember me</span>
-                                  <span class="label-body"><a href="#" class="fw-bold">Forgot Password</a></span>
-                                </label>
-                                <button type="submit" name="submit" class="btn btn-dark w-100 my-3">Login</button>
-                              </div>
-                              <div class="tab-pane fade" id="nav-register" role="tabpanel" aria-labelledby="nav-register-tab">
-                                <div class="form-group py-3">
-                                  <label class="mb-2" for="register">Your email address *</label>
-                                  <input type="text" minlength="2" name="username" placeholder="Your Email Address" class="form-control w-100 rounded-3 p-3" required>
-                                </div>
-                                <div class="form-group pb-3">
-                                  <label class="mb-2" for="sign-in">Password *</label>
-                                  <input type="password" minlength="2" name="password" placeholder="Your Password" class="form-control w-100 rounded-3 p-3" required>
-                                </div>
-                                <label class="py-3">
-                                  <input type="checkbox" required="" class="d-inline">
-                                  <span class="label-body">I agree to the <a href="#" class="fw-bold">Privacy
-                                      Policy</a></span>
-                                </label>
-                                <button type="submit" name="submit" class="btn btn-dark w-100 my-3">Register</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    </a>
+                    <ul class="dropdown-menu shadow">
+                      <li><a class="dropdown-item py-2" href="{{ route('backpack.auth.login') }}">Login</a></li>
+                      <li><a class="dropdown-item py-2" href="{{ route('backpack.auth.register') }}">Register</a></li>
+                    </ul>
                   </div>
+
                 </li>
                 <li class="wishlist-dropdown dropdown pe-3">
                   <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
@@ -1679,7 +1632,7 @@
       </div>
     </div>
   </div>
-
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
