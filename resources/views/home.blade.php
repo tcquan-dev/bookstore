@@ -258,13 +258,18 @@
                 <li class="pe-3">
                   <div class="dropdown">
                     <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <svg class="user">
-                      <use xlink:href="#user"></use>
-                    </svg>
+                      <svg class="user">
+                        <use xlink:href="#user"></use>
+                      </svg>
                     </a>
                     <ul class="dropdown-menu shadow">
-                      <li><a class="dropdown-item py-2" href="{{ route('backpack.auth.login') }}">Login</a></li>
-                      <li><a class="dropdown-item py-2" href="{{ route('backpack.auth.register') }}">Register</a></li>
+                      @if($user)
+                      <li><a class="dropdown-item py-2" href="{{ route('backpack.auth.login') }}">{{ $user->name }}</a></li>
+                      <li><a class="dropdown-item py-2" href="{{ route('backpack.auth.logout') }}">Đăng xuất</a></li>
+                      @else
+                      <li><a class="dropdown-item py-2" href="{{ route('backpack.auth.login') }}">Đăng nhập</a></li>
+                      <li><a class="dropdown-item py-2" href="{{ route('backpack.auth.register') }}">Đăng ký</a></li>
+                      @endif
                     </ul>
                   </div>
 
