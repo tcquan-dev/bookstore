@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->integer('sale_id');
+            $table->integer('sale_id')->nullable();
+            $table->integer('category_id')->nullable();
+            $table->integer('author_id')->nullable();
             $table->string('title');
             $table->string('description');
-            $table->integer('rate');
-            $table->float('price');
+            $table->integer('rate')->nullable();
+            $table->float('price', 11, 0)->default(0);
             $table->timestamps();
         });
     }
