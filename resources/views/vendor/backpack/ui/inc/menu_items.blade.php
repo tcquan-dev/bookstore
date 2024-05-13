@@ -7,3 +7,4 @@
 <x-backpack::menu-item title="Phân quyền" icon="fa-solid fa-layer-group" :link="backpack_url('permission')" />
 <x-backpack::menu-item title="Tác giả" icon="fa-solid fa-user-pen" :link="backpack_url('author')" />
 <x-backpack::menu-item title="Thể loại" icon="fa-solid fa-list" :link="backpack_url('category')" />
+<x-backpack::menu-item title="Chương trình giảm giá" icon="fa-solid fa-tags" :link="backpack_url('sale')" />
