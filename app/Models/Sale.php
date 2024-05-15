@@ -18,12 +18,15 @@ class Sale extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'title',
+        'name',
         'description',
-        'banner',
+        'image_path',
         'value'
     ];
 
+    /**
+     * Get books associated with the sale.
+     */
     public function books(): HasMany
     {
         return $this->hasMany(Book::class);

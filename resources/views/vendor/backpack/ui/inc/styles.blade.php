@@ -1,6 +1,7 @@
 @basset('https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css')
 @basset('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css')
 @basset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css')
+@basset('https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css')
 
 @basset(base_path('vendor/backpack/crud/src/resources/assets/css/common.css'))
 
