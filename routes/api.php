@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\AddressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +39,4 @@ Route::controller(BookController::class)->group(function () {
     Route::get('books', 'index');
     Route::get('books/{id}', 'show');
 });
+Route::resource('addresses', AddressController::class);
