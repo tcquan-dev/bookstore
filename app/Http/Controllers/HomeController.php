@@ -13,8 +13,9 @@ class HomeController extends Controller
 
     public function index()
     {
-        $user = backpack_auth()->user();;
-        return view('home', compact('user'));
+        $user = backpack_auth()->user();
+        $books = $user->cart->books ?? array();
+        return view('home', compact('user', 'books'));
     }
 
     public function getProfileForm()

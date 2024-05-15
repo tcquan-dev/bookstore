@@ -23,7 +23,7 @@ class Cart extends Model
         'user_id'
     ];
     /**
-     * Get the user that owns the profile.
+     * Get the user that owns a cart.
      */
     public function user(): BelongsTo
     {
@@ -31,7 +31,7 @@ class Cart extends Model
     }
 
     /**
-     * Get the profile associated with the user.
+     * Get books associated with a cart.
      */
     public function books(): BelongsToMany
     {

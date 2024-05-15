@@ -85,27 +85,19 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     }
 
     /**
+     * Get a cart associated with the user.
+     */
+    public function cart(): HasOne
+    {
+        return $this->hasOne(Cart::class);
+    }
+
+    /**
      * Get the delivery address associated with the user.
      */
     public function addresses(): HasMany
     {
         return $this->hasMany(Address::class);
-    }
-
-    /**
-     * Get the profile associated with the user.
-     */
-    public function carts(): HasMany
-    {
-        return $this->hasMany(Cart::class);
-    }
-
-    /**
-     * Get the profile associated with the user.
-     */
-    public function books(): BelongsToMany
-    {
-        return $this->belongsToMany(Book::class, 'carts');
     }
 
     /**
