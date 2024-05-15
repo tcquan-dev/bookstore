@@ -15,12 +15,12 @@ Route::group([
         (array) config('backpack.base.middleware_key', 'admin')
     ),
     'namespace' => 'App\Http\Controllers\Admin',
-], function () { // custom admin routes
-    Route::crud('user', 'UserCrudController');
-    Route::crud('book', 'BookCrudController');
-    Route::crud('role', 'RoleCrudController');
-    Route::crud('permission', 'PermissionCrudController');
-    Route::crud('author', 'AuthorCrudController');
-    Route::crud('category', 'CategoryCrudController');
-    Route::crud('sale', 'SaleCrudController');
-}); // this should be the absolute last line of this file
+], function () {
+    Route::crud('user', 'UserController');
+    Route::crud('book', 'BookController');
+    Route::crud('role', 'RoleController');
+    Route::crud('permission', 'PermissionController');
+    Route::crud('author', 'AuthorController');
+    Route::crud('category', 'CategoryController');
+    Route::crud('sale', 'SaleController');
+});

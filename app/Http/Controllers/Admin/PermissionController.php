@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\DeliveryAddressRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class DeliveryAddressCrudController
+ * Class PermissionCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class DeliveryAddressCrudController extends CrudController
+class PermissionController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +25,9 @@ class DeliveryAddressCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\DeliveryAddress::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/delivery-address');
-        CRUD::setEntityNameStrings('delivery address', 'delivery addresses');
+        CRUD::setModel(\App\Models\Permission::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/permission');
+        CRUD::setEntityNameStrings('permission', 'permissions');
     }
 
     /**
@@ -39,12 +38,7 @@ class DeliveryAddressCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
-
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        CRUD::setFromDb();
     }
 
     /**
@@ -55,13 +49,10 @@ class DeliveryAddressCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(DeliveryAddressRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
-
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        CRUD::setValidation([
+            'name' => 'required',
+        ]);
+        CRUD::setFromDb();
     }
 
     /**

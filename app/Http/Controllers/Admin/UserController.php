@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\UserRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use GuzzleHttp\Psr7\Request;
 
 /**
  * Class UserCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class UserCrudController extends CrudController
+class UserController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -39,14 +39,8 @@ class UserCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
-
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
-
-         CRUD::column('role_id')->type('select')->model('App\Models\Role')->attribute('name')->entity('role');
+        CRUD::setFromDb();
+        CRUD::column('role_id')->type('select')->model('App\Models\Role')->attribute('name')->entity('role');
     }
 
     /**
@@ -57,13 +51,13 @@ class UserCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(UserRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
+        CRUD::setValidation([
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users',
+            'password' => 'required|string|min:8'
+        ]);
+        CRUD::setFromDb();
         CRUD::field('role_id')->type('select')->model('App\Models\Role')->attribute('name')->entity('role');
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
     }
 
     /**
@@ -74,7 +68,12 @@ class UserCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        CRUD::setValidation([
+            'name' => 'required|string',
+            'email' => 'required|string'
+        ]);
+        CRUD::setFromDb();
         CRUD::removeField('password');
+        CRUD::field('role_id')->type('select')->model('App\Models\Role')->attribute('name')->entity('role');
     }
 }
