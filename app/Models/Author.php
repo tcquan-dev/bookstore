@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Author extends Model
 {
@@ -24,10 +24,10 @@ class Author extends Model
     ];
 
     /**
-     * Get the user that owns the profile.
+     * Get books associated with the author.
      */
-    public function books(): BelongsToMany
+    public function books(): HasMany
     {
-        return $this->belongsToMany(Book::class);
+        return $this->hasMany(Book::class);
     }
 }

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('category_id')->nullable();
             $table->integer('author_id')->nullable();
             $table->string('title');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('image_path')->nullable();
             $table->integer('rate')->nullable();
             $table->float('price', 11, 0)->default(0);
