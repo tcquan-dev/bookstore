@@ -1,0 +1,61 @@
+.nav-pills .nav-link {
+    font-size: 18px;
+    border-radius: 0 !important;
+}
+
+.tab-content {
+    margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+
+.form-check-input {
+    box-shadow: none !important;
+    border-color: #6852ed !important;
+}
+
+.form-check-input:checked {
+    background-color: #6852ed !important;
+}
+
+a:hover {
+    text-decoration: none !important;
+}
+
+.delete-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 1.5rem;
+    color: #f7444e;
+    border-radius: 3px;
+    transition: all 0.3s ease-out;
+}
+
+.delete-btn:hover > .fa-xmark {
+    color: #fff;
+    transform: rotate(90deg);
+    transition: all 0.5s ease-in;
+}
+
+.delete-btn:hover {
+    background-color: #f7444e;
+    transition: all 0.5s ease-in;
+}
+
+.modal.fade .modal-dialog {
+    transition:
+        transform 0.3s ease,
+        opacity 0.3s ease;
+}
+
+.modal.fade.show .modal-dialog {
+    transform: translate(0, 0);
+}
+
+.cursor-pointer{
+    cursor: pointer;
+  }
+
+.badge {
+    margin: 0 !important;
+}
