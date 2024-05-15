@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('books', function (Blueprint $table) {
+        Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->integer('sale_id')->nullable();
-            $table->integer('category_id')->nullable();
-            $table->integer('author_id')->nullable();
-            $table->string('title');
-            $table->string('description');
+            $table->string('name');
+            $table->string('description')->nullable();
             $table->string('image_path')->nullable();
-            $table->integer('rate')->nullable();
-            $table->float('price', 11, 0)->default(0);
+            $table->integer('value')->default(0);
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('books');
+        Schema::dropIfExists('sales');
     }
 };
