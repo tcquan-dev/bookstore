@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\VerificationRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class VerificationCrudController
+ * Class AuthorCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class VerificationCrudController extends CrudController
+class AuthorController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +25,9 @@ class VerificationCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Verification::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/verification');
-        CRUD::setEntityNameStrings('verification', 'verifications');
+        CRUD::setModel(\App\Models\Author::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/author');
+        CRUD::setEntityNameStrings('author', 'authors');
     }
 
     /**
@@ -39,12 +38,7 @@ class VerificationCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
-
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        CRUD::setFromDb();
     }
 
     /**
@@ -55,13 +49,10 @@ class VerificationCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(VerificationRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
-
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        CRUD::setValidation([
+            'name' => 'required',
+        ]);
+        CRUD::setFromDb();
     }
 
     /**

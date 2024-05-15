@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\BookRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -11,7 +10,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class BookCrudController extends CrudController
+class BookController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -39,12 +38,10 @@ class BookCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
-
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        CRUD::setFromDb();
+        CRUD::column('author_id')->type('select')->model('App\Models\Author')->attribute('name')->entity('author')->after('description');
+        CRUD::column('category_id')->type('select')->model('App\Models\Category')->attribute('name')->entity('category')->after('description');
+        CRUD::column('sale_id')->type('select')->model('App\Models\Author')->attribute('name')->entity('sale')->after('description');
     }
 
     /**
@@ -55,13 +52,34 @@ class BookCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(BookRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
-
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        CRUD::setValidation([
+            'title' => 'required',
+        ]);
+        CRUD::setFromDb();
+        CRUD::field([
+            'type'      => 'select',
+            'name'      => 'author_id',
+            'entity'    => 'author',
+            'model'     => 'App\Models\Author',
+            'attribute' => 'name',
+            'pivot'     => true,
+        ])->after('description');
+        CRUD::field([
+            'type'      => 'select',
+            'name'      => 'category_id',
+            'entity'    => 'category',
+            'model'     => 'App\Models\Category',
+            'attribute' => 'name',
+            'pivot'     => true,
+        ])->after('author_id');
+        CRUD::field([
+            'type'      => 'select',
+            'name'      => 'sale_id',
+            'entity'    => 'sale',
+            'model'     => 'App\Models\Sale',
+            'attribute' => 'name',
+            'pivot'     => true,
+        ])->after('category_id');
     }
 
     /**

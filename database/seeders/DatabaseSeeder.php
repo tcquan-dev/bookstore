@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PermissionSeeder::class,
             BookSeeder::class,
-            CartSeeder::class
+            AuthorSeeder::class,
+            CategorySeeder::class,
+            SaleSeeder::class,
         ]);
     }
 }

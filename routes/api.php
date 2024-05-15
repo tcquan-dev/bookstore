@@ -2,9 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\ProfileController;
-use App\Http\Controllers\Api\DeliveryAddressController;
+use App\Http\Controllers\Api\AddressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,5 +36,9 @@ Route::controller(ProfileController::class)->group(function () {
     Route::get('profiles', 'getProfile');
     Route::post('profiles', 'updateProfile');
 });
-Route::resource('delivery_addresses', DeliveryAddressController::class);
+Route::controller(BookController::class)->group(function () {
+    Route::get('books', 'index');
+    Route::get('books/{id}', 'show');
+});
+Route::resource('addresses', AddressController::class);
 Route::resource('carts', CartController::class);

@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\CartRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class CartCrudController
+ * Class RoleCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class CartCrudController extends CrudController
+class RoleController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +25,10 @@ class CartCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Cart::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/cart');
-        CRUD::setEntityNameStrings('cart', 'carts');
+        CRUD::setModel(\App\Models\Role::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/role');
+        CRUD::setEntityNameStrings('role', 'roles');
+        $this->setupListOperation();
     }
 
     /**
@@ -39,12 +39,12 @@ class CartCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
-
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        CRUD::setFromDb();
+        CRUD::column([
+            'type'      => 'select',
+            'name'      => 'permissions',
+            'entity'    => 'permissions',
+        ]);
     }
 
     /**
@@ -55,13 +55,19 @@ class CartCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(CartRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
-
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        CRUD::setValidation([
+            'name' => 'required',
+        ]);
+        CRUD::setFromDb();
+        CRUD::addField([
+            'label'     => "Permissions",
+            'type'      => 'select_multiple',
+            'name'      => 'permissions',
+            'entity'    => 'permissions',
+            'model'     => "App\Models\Permission",
+            'attribute' => 'name',
+            'pivot'     => true
+        ]);
     }
 
     /**

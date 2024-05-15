@@ -20,14 +20,13 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->boolean('active')->default(false);
             $table->timestamps();
         });
 
         DB::unprepared('
             CREATE TRIGGER create_profile_trigger AFTER INSERT ON users FOR EACH ROW
             BEGIN
-                INSERT INTO profiles (user_id, name, created_at, updated_at) VALUES (NEW.id, NEW.name, now(), now());
+                INSERT INTO profiles (user_id, created_at, updated_at) VALUES (NEW.id, now(), now());
             END
         ');
 
