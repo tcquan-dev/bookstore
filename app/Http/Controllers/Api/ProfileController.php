@@ -39,7 +39,9 @@ class ProfileController extends Controller
 
             $path = $user->profile->avatar;
             if ($request->hasFile('avatar')) {
-                Storage::delete($path);
+                if (isset($path)) {
+                    Storage::delete($path);
+                }
                 $path = Storage::putFile('uploads', $request->file('avatar'));
             }
 
