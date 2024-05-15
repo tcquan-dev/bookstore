@@ -112,8 +112,8 @@
 
             <nav id="header-nav" class="navbar navbar-expand-lg py-3">
                 <div class="container">
-                    <a class="navbar-brand" href="{{ route('home') }}">
-                        <img src="images/logo.png" class="logo w-25">
+                    <a class="navbar-brand" href="{{ route('home') }}" title="BookStore">
+                        <b>Book</b>Store
                     </a>
                     <button class="navbar-toggler d-flex d-lg-none order-3 p-2" type="button"
                         data-bs-toggle="offcanvas" data-bs-target="#bdNavbar" aria-controls="bdNavbar"
@@ -125,8 +125,8 @@
                     <div class="offcanvas offcanvas-end" tabindex="-1" id="bdNavbar"
                         aria-labelledby="bdNavbarOffcanvasLabel">
                         <div class="offcanvas-header px-4 pb-0">
-                            <a class="navbar-brand" href="index.html">
-                                <img src="images/logo.png" class="logo">
+                            <a class="navbar-brand" href="{{ route('home') }}" title="BookStore">
+                                <b>Book</b>Store
                             </a>
                             <button type="button" class="btn-close btn-close-black" data-bs-dismiss="offcanvas"
                                 aria-label="Close" data-bs-target="#bdNavbar"></button>
@@ -315,7 +315,7 @@
                                                 data-bs-toggle="dropdown" aria-expanded="false">
                                                 @if ($user)
                                                     <img class="rounded-circle img-fluid"
-                                                        src="{{ $user->profile->avatar ? asset('storage/' . $user->profile->avatar) : asset('storage/avatar/default.jpg') }}"
+                                                        src="{{ $user->profile->avatar ?? asset('storage/' . $user->profile->avatar) }}"
                                                         alt="Avatar">
                                                 @else
                                                     <i class="fa-regular fa-user"></i>

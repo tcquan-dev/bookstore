@@ -4,6 +4,7 @@
 <head>
   <link rel="stylesheet" href="{{ url('css/form.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   @include(backpack_view('inc.head'))
 </head>
 
@@ -22,10 +23,11 @@
   <script>
     var csrfToken = "{{ csrf_token() }}";
 
-    $('#submit-btn').click(function(event) {
-      event.preventDefault();
-
+    $(document).on('click', '#submit-btn', function() {
       var formData = $('.address-form').serialize();
+      var checked = $('#default').is(':checked');
+
+      formData += '&default=' + (checked ? 1 : 0);
 
       $.ajax({
         url: '/addresses',
@@ -38,16 +40,16 @@
           if (response.success) {
             swal("Success", response.message, "success");
             $('#addressModal').modal('hide');
-            $('#list-address').replaceWith(response.html);
+            $('#content-toggle').html(response.html);
             $('#list-address').removeClass('fade').addClass('show').fadeIn();
           } else {
             swal("Error", response.message, "error");
           }
-        },
+        }
       });
     });
 
-    $('.close-icon').click(function() {
+    $(document).on('click', '.delete-btn', function() {
       var card = $(this).closest('.card');
       var addressId = card.data('address-id');
 
@@ -76,6 +78,53 @@
               }
             }
           });
+        }
+      });
+    });
+
+    $(document).on('click', '#update-btn', function() {
+      var card = $(this).closest('.card');
+      var addressId = card.data('address-id');
+
+      $.ajax({
+        url: '/addresses/' + addressId,
+        type: 'GET',
+        headers: {
+          'X-CSRF-TOKEN': csrfToken
+        },
+        success: function(response) {
+          if (response.success) {
+            $('#addressModal .modal-content').html(response.form);
+          } else {
+            swal("Error", response.message, "error");
+          }
+        }
+      });
+    });
+
+    $(document).on('click', '#update-submit-btn', function() {
+      var addressId = $(this).data('address-id');
+      var formData = $('.address-form').serialize();
+      var checked = $('#default').is(':checked');
+
+      formData += '&default=' + (checked ? 1 : 0);
+
+      $.ajax({
+        url: '/addresses/' + addressId,
+        type: 'PUT',
+        data: formData,
+        headers: {
+          'X-CSRF-TOKEN': csrfToken
+        },
+        success: function(response) {
+          if (response.success) {
+            swal("Success", response.message, "success");
+            $('#addressModal').modal('hide');
+            $('#content-toggle').html(response.html);
+            $('#list-address').removeClass('fade').addClass('show').fadeIn();
+          } else {
+            swal("Error", response.message, "error");
+          }
         }
       });
     });
