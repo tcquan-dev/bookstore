@@ -80,6 +80,10 @@ class BookController extends CrudController
             'attribute' => 'name',
             'pivot'     => true,
         ])->after('category_id');
+        CRUD::field('image_path')->type('upload')->withFiles([
+            'disk' => 'public',
+            'path' => 'image_path'
+        ]);
     }
 
     /**

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Home;
 
+use Exception;
+use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\AddressCollection;
-use App\Models\Address;
-use Exception;
 
 class AddressController extends Controller
 {
@@ -44,7 +43,7 @@ class AddressController extends Controller
 
             Address::create($addressData);
 
-            $addresses = $user->addresses;
+            $addresses = $user->addresses ?? array();
 
             return response()->json([
                 'success' => true,
@@ -100,7 +99,7 @@ class AddressController extends Controller
 
             $address->update($request->all());
 
-            $addresses = $user->addresses;
+            $addresses = $user->addresses ?? array();
 
             return response()->json([
                 'success' => true,

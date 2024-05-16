@@ -21,6 +21,7 @@ class Book extends Model
     protected $fillable = [
         'title',
         'description',
+        'image_path',
         'author_id',
         'category_id',
         'sale_id',
