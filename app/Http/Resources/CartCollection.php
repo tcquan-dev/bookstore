@@ -20,15 +20,15 @@ class CartCollection extends JsonResource
                 'id' => $book->id,
                 'title' => $book->title,
                 'description' => $book->description,
-                'author' => $book->author->name,
-                'category' => $book->category->name,
-                'sale' => $book->sale->name,
+                'author' => isset($book->author) ? $book->author->name : '',
+                'category' => isset($book->category) ? $book->category->name : '',
+                'sale' => isset($book->sale) ? $book->sale->name : '',
                 'rate' => $book->rate,
                 'price' => $book->price,
                 'quantity' => $book->pivot->quantity
             ];
         });
-
+        
         return [
             'id' => $this->id,
             'books' => $books
