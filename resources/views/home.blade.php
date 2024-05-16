@@ -263,49 +263,46 @@
                                     <li class="cart-dropdown dropdown pe-3">
                                         <a href="cart.html" class="dropdown-toggle" data-bs-toggle="dropdown"
                                             role="button" aria-expanded="false">
-                                            <i class="fa-solid fa-cart-shopping"></i>
+                                            <div class="cart-icon-container">
+                                                <i class="fas fa-shopping-cart fa-lg"></i>
+                                                <span class="cart-item-count">{{ count($books) }}</span>
+                                            </div>
                                         </a>
                                         <div
                                             class="dropdown-menu animate slide dropdown-menu-start dropdown-menu-lg-end p-3">
                                             <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                                <span class="text-primary">Your cart</span>
-                                                <span class="badge bg-primary rounded-pill">2</span>
+                                                <span class="text-primary">Giỏ hàng của tôi</span>
                                             </h4>
-                                            <ul class="list-group mb-3">
-                                                <li
-                                                    class="list-group-item bg-transparent d-flex justify-content-between lh-sm">
-                                                    <div>
-                                                        <h5>
-                                                            <a href="single-product.html">Secrets of the Alchemist</a>
-                                                        </h5>
-                                                        <small>High quality in good price.</small>
-                                                    </div>
-                                                    <span class="text-primary">$870</span>
-                                                </li>
-                                                <li
-                                                    class="list-group-item bg-transparent d-flex justify-content-between lh-sm">
-                                                    <div>
-                                                        <h5>
-                                                            <a href="single-product.html">Quest for the Lost City</a>
-                                                        </h5>
-                                                        <small>Professional Quest for the Lost City.</small>
-                                                    </div>
-                                                    <span class="text-primary">$600</span>
-                                                </li>
-                                                <li
-                                                    class="list-group-item bg-transparent d-flex justify-content-between">
-                                                    <span class="text-capitalize"><b>Total (USD)</b></span>
-                                                    <strong>$1470</strong>
-                                                </li>
-                                            </ul>
-                                            <div class="d-flex flex-wrap justify-content-center">
-                                                <a href="cart.html" class="w-100 btn btn-dark mb-1"
-                                                    type="submit">View
-                                                    Cart</a>
-                                                <a href="checkout.html" class="w-100 btn btn-primary"
-                                                    type="submit">Go
-                                                    to checkout</a>
-                                            </div>
+                                            @if (count($books) > 0)
+                                                <ul class="list-group mb-3">
+                                                    @foreach ($books as $item)
+                                                        <li class="list-group-item">
+                                                            <div>
+                                                                <h5>
+                                                                    <a
+                                                                        href="single-product.html">{{ $item->title }}</a>
+                                                                </h5>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <span
+                                                                        class="text-primary">{{ number_format($item->price) . ' VNĐ' }}</span>
+                                                                    <span>x{{ $item->pivot->quantity }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                                <div class="d-flex justify-content-around">
+                                                    <a href="cart.html" class="btn btn-primary" type="submit">Xem
+                                                        giỏ hàng</a>
+                                                    <a href="checkout.html" class="btn btn-primary"
+                                                        type="submit">Thanh toán</a>
+                                                </div>
+                                            @else
+                                                <img class="img-fluid"
+                                                    src="https://cdni.iconscout.com/illustration/premium/thumb/empty-cart-7359557-6024626.png"
+                                                    alt="Cart">
+                                                <p class="text-center">Chưa có sản phẩm trong giỏ hàng.</p>
+                                            @endif
                                         </div>
                                     </li>
 
@@ -315,7 +312,7 @@
                                                 data-bs-toggle="dropdown" aria-expanded="false">
                                                 @if ($user)
                                                     <img class="rounded-circle img-fluid"
-                                                        src="{{ $user->profile->avatar ?? asset('storage/' . $user->profile->avatar) }}"
+                                                        src="{{ isset($user->profile->avatar) ?? asset('storage/' . $user->profile->avatar) }}"
                                                         alt="Avatar">
                                                 @else
                                                     <i class="fa-regular fa-user"></i>
