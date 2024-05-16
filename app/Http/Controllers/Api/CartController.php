@@ -30,7 +30,21 @@ class CartController extends Controller
      */
     public function index()
     {
-        return CartCollection::collection($this->user->carts);
+        try {
+            $cart = $this->user->cart;
+            if ($cart) {
+                return new CartCollection($cart);
+            } else {
+                return response()->json([
+                    'data' => array()
+                ]);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -41,21 +55,15 @@ class CartController extends Controller
         try {
             $book_id = $request->post('book_id');
             $quantity = $request->post('quantity');
-
-            $carts = $this->user->carts;
-
-            if ($carts->isEmpty()) {
-                $cart = $this->user->carts()->create();
+            $cart = $this->user->cart;
+            if (empty($cart)) {
+                $cart = $this->user->cart()->create();
                 $cart->books()->attach($book_id, ['quantity' => $quantity]);
             } else {
-                $cart = $this->user->carts()->whereHas('books', function ($query) use ($book_id) {
-                    $query->where('book_id', $book_id);
-                })->first();
-                if (!$cart) {
-                    $cart = $this->user->carts()->first();
+                $book = $cart->books()->where('book_id', $book_id)->first();
+                if (!$book) {
                     $cart->books()->attach($book_id, ['quantity' => $quantity]);
                 } else {
-                    $book = $cart->books()->where('book_id', $book_id)->first();
                     $book->pivot->quantity += $quantity;
                     $book->pivot->save();
                 }
@@ -79,7 +87,7 @@ class CartController extends Controller
      */
     public function show($id)
     {
-        $cart = $this->user->carts()->find($id);
+        $cart = $this->user->cart->find($id);
         if ($cart) {
             return new CartCollection($cart);
         } else {
@@ -99,17 +107,21 @@ class CartController extends Controller
             $book_id = $request->post('book_id');
             $quantity = $request->post('quantity');
 
-            $cart = $this->user->carts()->find($id);
+            $cart = $this->user->cart->find($id);
             $book = $cart->books()->where('book_id', $book_id)->first();
 
             if ($book) {
                 $book->pivot->quantity += $quantity;
-            
+
                 if ($book->pivot->quantity <= 0) {
                     $cart->books()->detach($book_id);
                 } else {
                     $book->pivot->save();
                 }
+            }
+
+            if (count($cart->books) == 0) {
+                $cart->delete();
             }
 
             return response()->json([
