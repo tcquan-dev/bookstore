@@ -1,4 +1,4 @@
-(function ($) {
+$(document).ready(function () {
     "use strict";
 
     var searchPopup = function () {
@@ -170,11 +170,6 @@
         });
     }); // End of a document ready
 
-    window.addEventListener("load", function () {
-        const preloader = document.getElementById("preloader");
-        preloader.classList.add("hide-preloader");
-    });
-
     $(document).on("click", "#button-plus", function () {
         var $parent = $(this).closest(".row.align-items-center");
         var price = parseFloat($parent.find("#price-value").val());
@@ -184,33 +179,164 @@
         quantity++;
         $quantityInput.val(quantity);
 
-        // Cập nhật tổng số tiền
         var total = price * quantity;
         $parent.find(".total").text(numberWithCommas(total) + " VNĐ");
     });
 
-    // Bắt sự kiện khi nút giảm số lượng được click
     $(document).on("click", "#button-minus", function () {
-        var card = $(this).closest(".card");
-        var $parent = $(this).closest(".row.align-items-center");
-        var price = parseFloat($parent.find("#price-value").val());
-        var $quantityInput = $parent.find(".quantity-input");
-        var quantity = parseInt($quantityInput.val());
+        let card = $(this).closest(".card");
+        let $parent = $(this).closest(".row.align-items-center");
+        let price = parseFloat($parent.find("#price-value").val());
+        let $quantityInput = $parent.find(".quantity-input");
+        let quantity = parseInt($quantityInput.val());
 
         if (quantity > 1) {
             quantity--;
             $quantityInput.val(quantity);
 
-            // Cập nhật tổng số tiền
-            var total = price * quantity;
+            let total = price * quantity;
             $parent.find(".total").text(numberWithCommas(total) + " VNĐ");
         } else {
-            card.remove();
+            swal({
+                title: "Bạn chắc chắn muốn bỏ sản phẩm này?",
+                text: "Hành động này không thể hoàn tác!",
+                icon: "warning",
+                buttons: {
+                    cancel: "Hủy",
+                    confirm: "Có",
+                },
+            }).then((result) => {
+                if (result) {
+                    card.remove();
+                }
+            });
         }
     });
 
-    // Hàm chuyển đổi số sang chuỗi với dấu phân cách
     function numberWithCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-})(jQuery);
+
+    $(document).on("click", "#submit-btn", function () {
+        let formData = $(".address-form").serialize();
+        let checked = $("#default").is(":checked");
+
+        formData += "&default=" + (checked ? 1 : 0);
+
+        $.ajax({
+            url: "/addresses",
+            type: "POST",
+            data: formData,
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {
+                if (response.success) {
+                    swal("Success", response.message, "success");
+                    $("#addressModal").modal("hide");
+                    $("#content-toggle").html(response.html);
+                    $("#list-address")
+                        .removeClass("fade")
+                        .addClass("show")
+                        .fadeIn();
+                } else {
+                    swal("Error", response.message, "error");
+                }
+            },
+        });
+    });
+
+    $(document).on("click", ".delete-btn", function () {
+        let card = $(this).closest(".card");
+        let addressId = card.data("address-id");
+
+        swal({
+            title: "Bạn có chắc chắn muốn xóa?",
+            text: "Hành động này không thể hoàn tác!",
+            icon: "warning",
+            buttons: {
+                cancel: "Hủy",
+                confirm: "Có",
+            },
+        }).then((result) => {
+            if (result) {
+                $.ajax({
+                    url: "/addresses/" + addressId,
+                    type: "DELETE",
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                            "content",
+                        ),
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            swal("Success", response.message, "success");
+                            card.remove();
+                        } else {
+                            swal("Error", response.message, "error");
+                        }
+                    },
+                });
+            }
+        });
+    });
+
+    $(document).on("click", "#update-btn", function () {
+        let card = $(this).closest(".card");
+        let addressId = card.data("address-id");
+
+        $.ajax({
+            url: "/addresses/" + addressId,
+            type: "GET",
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {
+                if (response.success) {
+                    $("#addressModal .modal-content").html(response.form);
+                } else {
+                    swal("Error", response.message, "error");
+                }
+            },
+        });
+    });
+
+    $(document).on("click", "#update-submit-btn", function () {
+        let addressId = $(this).data("address-id");
+        let formData = $(".address-form").serialize();
+        let checked = $("#default").is(":checked");
+
+        formData += "&default=" + (checked ? 1 : 0);
+
+        $.ajax({
+            url: "/addresses/" + addressId,
+            type: "PUT",
+            data: formData,
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {
+                if (response.success) {
+                    swal("Success", response.message, "success");
+                    $("#addressModal").modal("hide");
+                    $("#content-toggle").html(response.html);
+                    $("#list-address")
+                        .removeClass("fade")
+                        .addClass("show")
+                        .fadeIn();
+                } else {
+                    swal("Error", response.message, "error");
+                }
+            },
+        });
+    });
+
+    $(document).on("change", "#avatar-input", function () {
+        let file = this.files[0];
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById("avatar-preview").src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+});

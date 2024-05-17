@@ -9,10 +9,10 @@
         <div class="card shadow">
             <ul class="nav nav-pills shadow-sm">
                 <li class="nav-item">
-                    <a class="nav-link py-3 active" data-toggle="pill" href="#profile" role="tab">Hồ sơ của tôi</a>
+                    <a class="nav-link py-3 active" data-bs-toggle="pill" href="#profile" role="tab">Hồ sơ của tôi</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link py-3" data-toggle="pill" href="#list-address" role="tab">Địa chỉ của tôi</a>
+                    <a class="nav-link py-3" data-bs-toggle="pill" href="#list-address" role="tab">Địa chỉ của tôi</a>
                 </li>
             </ul>
             <div class="card-body">

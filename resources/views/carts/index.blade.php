@@ -10,7 +10,6 @@
 
 <body>
     @include('ui.main_header')
-    @include('ui.preloader')
     <div class="container">
         @foreach ($books as $item)
         <div class="card shadow my-3">
