@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use Exception;
-use Illuminate\Http\Request;
 use App\Models\Address;
+use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AddressCollection;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AddressController extends Controller
 {
@@ -15,7 +16,14 @@ class AddressController extends Controller
 
     public function __construct(Request $request)
     {
-        $this->user = JWTAuth::parseToken($request->bearerToken())->authenticate();
+        try {
+            $this->user = JWTAuth::parseToken($request->bearerToken())->authenticate();
+        } catch (JWTException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
     /**
      * Display a listing of the resource.
