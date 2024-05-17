@@ -15,7 +15,7 @@ class ProfileCollection extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'name' => $this->name,
+            'name' => $this->user->name,
             'avatar' => $this->avatar ?? '',
             'gender' => intval($this->gender),
             'phone_number' => $this->phone_number ?? '',
