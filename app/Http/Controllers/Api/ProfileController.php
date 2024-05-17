@@ -12,20 +12,25 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class ProfileController extends Controller
 {
-    /**
-     * Get user profile.
-     */
-    public function getProfile(Request $request)
+    protected $user;
+
+    public function __construct(Request $request)
     {
         try {
-            $user = JWTAuth::parseToken($request->bearerToken())->authenticate();
-            return new ProfileCollection($user->profile);
+            $this->user = JWTAuth::parseToken($request->bearerToken())->authenticate();
         } catch (JWTException $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+    /**
+     * Get user profile.
+     */
+    public function getProfile()
+    {
+        return new ProfileCollection($this->user->profile);
     }
 
     /**
@@ -34,10 +39,15 @@ class ProfileController extends Controller
     public function updateProfile(Request $request)
     {
         try {
-            $user = JWTAuth::parseToken($request->bearerToken())->authenticate();
-            $profile = Profile::where('user_id', $user->id)->first();
+            $profile = $this->user->profile;
 
-            $path = $user->profile->avatar;
+            if ($request->has('name')) {
+                $this->user->update([
+                    'name' => $request->post('name')
+                ]);
+            }
+
+            $path = $this->user->profile->avatar;
             if ($request->hasFile('avatar')) {
                 if (isset($path)) {
                     Storage::delete($path);
