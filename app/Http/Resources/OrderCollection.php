@@ -17,8 +17,8 @@ class OrderCollection extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'payment_method' => $this->payment_method == 1 ? 'Thanh toán khi nhận hàng' : 'Thanh toán chuyển khoản',
-            'payment_status' => $this->payment_status == 1 ? 'Đã thanh toán' : 'Chưa thanh toán',
+            'payment_method' => config('constants.payment_method.' . $this->payment_method),
+            'payment_status' => config('constants.payment_status.' . $this->payment_status),
             'address' => new AddressCollection($this->address),
             'status' => $this->status->name,
             'total_price' => $this->total_price

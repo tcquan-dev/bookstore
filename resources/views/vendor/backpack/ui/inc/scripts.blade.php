@@ -1,6 +1,7 @@
 @basset('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js')
 @basset('https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js')
 @basset('https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js')
+@basset('https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js')
 
 @if (backpack_theme_config('scripts') && count(backpack_theme_config('scripts')))
     @foreach (backpack_theme_config('scripts') as $path)
