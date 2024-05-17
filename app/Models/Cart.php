@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Cart extends Model
 {
@@ -20,7 +21,8 @@ class Cart extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id'
+        'user_id',
+        'address_id'
     ];
     /**
      * Get the user that owns a cart.
@@ -31,10 +33,18 @@ class Cart extends Model
     }
 
     /**
-     * Get books associated with a cart.
+     * Get the books associated with the cart.
      */
     public function books(): BelongsToMany
     {
         return $this->belongsToMany(Book::class)->withPivot('quantity');
+    }
+
+    /**
+     * Get the address associated with the cart.
+     */
+    public function address(): BelongsTo
+    {
+        return $this->belongsTo(Address::class);
     }
 }

@@ -32,8 +32,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'name',
         'email',
         'password',
-        'email_verified_at',
-        'active'
     ];
 
     /**
@@ -85,7 +83,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     }
 
     /**
-     * Get a cart associated with the user.
+     * Get the cart associated with the user.
      */
     public function cart(): HasOne
     {
@@ -93,7 +91,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     }
 
     /**
-     * Get the delivery address associated with the user.
+     * Get the addresses associated with the user.
      */
     public function addresses(): HasMany
     {
@@ -106,6 +104,14 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * Get the orders associated with the user.
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
     }
 
     public function hasRole($role)

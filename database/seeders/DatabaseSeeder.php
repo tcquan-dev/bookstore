@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             AuthorSeeder::class,
             CategorySeeder::class,
             SaleSeeder::class,
+            StatusSeeder::class,
         ]);
     }
 }
