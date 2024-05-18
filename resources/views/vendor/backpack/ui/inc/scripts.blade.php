@@ -5,7 +5,7 @@
 
 @if (backpack_theme_config('scripts') && count(backpack_theme_config('scripts')))
     @foreach (backpack_theme_config('scripts') as $path)
-        @if(is_array($path))
+        @if (is_array($path))
             @basset(...$path)
         @else
             @basset($path)
@@ -23,9 +23,7 @@
     @vite(backpack_theme_config('vite_scripts'))
 @endif
 
-@include('sweetalert::alert')
-
-@if(config('app.debug'))
+@if (config('app.debug'))
     @include('crud::inc.ajax_error_frame')
 @endif
 

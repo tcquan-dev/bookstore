@@ -8,42 +8,5 @@
 {{-- - used right away in AJAX operations (ex: List) --}}
 {{-- - pushed to the end of the page, after jQuery is loaded, for non-AJAX operations (ex: Show) --}}
 @push('after_scripts') @if (request()->ajax()) @endpush @endif
-<script>
-	$(document).on("click", ".btn-delete", function(event) {
-		let route = $(this).attr('data-route');
-		let entry = $(this).closest('tr');
-		swal({
-			title: 'Are you sure you want to delete this item?',
-			icon: 'warning',
-			buttons: {
-				cancel: 'Cancel',
-				confirm: 'Yes',
-			},
-		}).then((result) => {
-			if (result) {
-				$.ajax({
-					url: route,
-					type: "DELETE",
-					success: function(response) {
-						if (response) {
-							swal({
-								title: 'Your item has been deleted!',
-								icon: 'success',
-							});
-							entry.remove();
-						} else {
-							swal({
-								title: 'Something went wrong!',
-								icon: 'error',
-							});
-						}
-					},
-				});
-			}
-		});
-	});
-
-	// make it so that the function above is run after each DataTable draw event
-	// crud.addFunctionToDataTablesDrawEventQueue('deleteEntry');
-</script>
+<script type="text/javascript" src="{{ asset('js/alert.js') }}"></script>
 @if (!request()->ajax()) @endpush @endif
