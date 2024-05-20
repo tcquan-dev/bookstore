@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Home\AddressController;
+use App\Http\Controllers\Home\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,4 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/profiles/update', 'updateProfile')->name('profiles.update');
 });
 Route::resource('addresses', AddressController::class);
+Route::resource('carts', CartController::class);

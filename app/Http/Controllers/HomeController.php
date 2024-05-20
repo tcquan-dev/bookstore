@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
-
-
     public function index()
     {
         $user = backpack_auth()->user();
@@ -20,8 +18,9 @@ class HomeController extends Controller
 
     public function getProfileForm()
     {
-        $user = backpack_auth()->user();;
-        return view('forms.profile', compact('user'));
+        $user = backpack_auth()->user();
+        $addresses = $user->addresses ?? array();
+        return view('forms.profile', compact('user', 'addresses'));
     }
 
     public function updateProfile(Request $request)
@@ -33,13 +32,13 @@ class HomeController extends Controller
             $path = $user->profile->avatar;
             if ($request->hasFile('avatar')) {
                 if (isset($path)) {
-                    Storage::delete($path);
+                    Storage::delete('public/' . $path);
                 }
-                $path = Storage::putFile('uploads', $request->file('avatar'));
+                $path = $request->file('avatar')->store('public/avatar');
             }
 
             $profileData = [
-                'avatar' => $path,
+                'avatar' => substr($path, strlen('public/')),
                 'gender' => $request->post('gender'),
                 'phone_number' => $request->post('phone_number'),
                 'address' => $request->post('address'),
@@ -48,7 +47,7 @@ class HomeController extends Controller
 
             $profile->update($profileData);
             toast('Cập nhật thông tin thành công!', 'success');
-            return redirect('home')->with(compact('user'));
+            return redirect()->back();
         } catch (Exception $e) {
             toast($e->getMessage(), 'error');
             return redirect()->back();

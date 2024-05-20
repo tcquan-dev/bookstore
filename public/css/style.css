@@ -1436,6 +1436,21 @@ select#input-sort {
     font-size: 11px;
 }
 
-.fa-shopping-cart {
-    color: #0067ff;
+.avatar {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+}
+
+.dropdown-toggle::after {
+    content: none;
+}
+
+.input-group {
+    width: 13%;
+}
+
+.form-check-input {
+    box-shadow: none !important;
 }
