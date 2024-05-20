@@ -55,9 +55,12 @@ class CartController extends Controller
         try {
             $book_id = $request->post('book_id');
             $quantity = $request->post('quantity');
+            $address_id = $request->post('address_id');
             $cart = $this->user->cart;
             if (empty($cart)) {
-                $cart = $this->user->cart()->create();
+                $cart = $this->user->cart()->create([
+                    'address_id'=> $address_id,
+                ]);
                 $cart->books()->attach($book_id, ['quantity' => $quantity]);
             } else {
                 $book = $cart->books()->where('book_id', $book_id)->first();
