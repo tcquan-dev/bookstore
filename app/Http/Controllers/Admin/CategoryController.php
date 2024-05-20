@@ -53,6 +53,10 @@ class CategoryController extends CrudController
             'name' => 'required',
         ]);
         CRUD::setFromDb();
+        CRUD::field('image_path')->type('upload')->withFiles([
+            'disk' => 'public',
+            'path' => 'image_path'
+        ]);
     }
 
     /**

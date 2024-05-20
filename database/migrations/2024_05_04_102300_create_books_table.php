@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('description')->nullable();
             $table->string('image_path')->nullable();
-            $table->integer('rate')->nullable();
+            $table->boolean('featured')->default(false);
             $table->float('price', 11, 0)->default(0);
             $table->timestamps();
         });
