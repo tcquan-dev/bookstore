@@ -114,6 +114,14 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->hasMany(Order::class);
     }
 
+    /**
+     * Get the reviews associated with the user.
+     */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function hasRole($role)
     {
         if ($role == $this->role->name)
