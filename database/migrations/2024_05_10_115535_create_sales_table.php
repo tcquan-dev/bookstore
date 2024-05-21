@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('image_path')->nullable();
             $table->integer('value')->default(0);
+            $table->date('expiration_date')->nullable();
             $table->timestamps();
         });
     }

@@ -82,8 +82,9 @@ class BookController extends CrudController
         ])->after('category_id');
         CRUD::field('image_path')->type('upload')->withFiles([
             'disk' => 'public',
-            'path' => 'image_path'
+            'path' => 'images'
         ]);
+        CRUD::removeField('rate');
     }
 
     /**
