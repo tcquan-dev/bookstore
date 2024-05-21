@@ -32,7 +32,7 @@ class ReviewController extends Controller
     {
         try {
             if ($request->hasFile('image')) {
-                $image_path = $request->file('image')->store('public/reviews');
+                $imagePath = $request->file('image')->store('public/reviews');
             }
 
             $reviewData = [
@@ -40,7 +40,7 @@ class ReviewController extends Controller
                 'book_id' => $request->post('book_id'),
                 'content' => $request->post('content'),
                 'rate' => $request->post('rate'),
-                'image_path' => $image_path ?? ''
+                'image_path' => $imagePath ?? ''
             ];
 
             $review = Review::create($reviewData);

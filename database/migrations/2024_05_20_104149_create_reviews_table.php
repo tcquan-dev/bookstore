@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -20,6 +21,29 @@ return new class extends Migration
             $table->integer('rate');
             $table->timestamps();
         });
+
+        DB::unprepared('
+            CREATE TRIGGER update_rate_after_insert_trigger
+            AFTER INSERT ON reviews
+            FOR EACH ROW
+            BEGIN
+                DECLARE totalStars INT;
+                DECLARE reviewCount INT;
+                DECLARE averageRating FLOAT;
+
+                SELECT SUM(rate), COUNT(*)
+                INTO totalStars, reviewCount
+                FROM reviews
+                WHERE book_id = NEW.book_id;
+
+                SET averageRating = totalStars / reviewCount;
+                SET averageRating = ROUND(averageRating * 2) / 2;
+
+                UPDATE books
+                SET rate = averageRating
+                WHERE id = NEW.book_id;
+            END
+        ');
     }
 
     /**
