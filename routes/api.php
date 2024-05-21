@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\AddressController;
 
@@ -32,19 +33,26 @@ Route::group([
         Route::get('logout', 'logout');
     });
 });
-
-Route::controller(ProfileController::class)->group(function () {
-    Route::get('profiles', 'getProfile');
-    Route::post('profiles', 'updateProfile');
+Route::group([
+    'middleware' => 'jwt.auth'
+], function () {
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('profiles', 'getProfile');
+        Route::post('profiles', 'updateProfile');
+    });
+    Route::controller(BookController::class)->group(function () {
+        Route::get('books', 'index');
+        Route::get('books/{id}', 'show');
+    });
+    Route::controller(OrderController::class)->group(function () {
+        Route::get('orders', 'index');
+        Route::post('orders', 'store');
+        Route::get('orders/{id}', 'show');
+    });
+    Route::resource('addresses', AddressController::class);
+    Route::resource('carts', CartController::class);
+    Route::controller(ReviewController::class)->group(function () {
+        Route::post('reviews', 'store');
+        Route::get('reviews/{id}', 'show');
+    });
 });
-Route::controller(BookController::class)->group(function () {
-    Route::get('books', 'index');
-    Route::get('books/{id}', 'show');
-});
-Route::controller(OrderController::class)->group(function () {
-    Route::get('orders', 'index');
-    Route::post('orders', 'store');
-    Route::get('orders/{id}', 'show');
-});
-Route::resource('addresses', AddressController::class);
-Route::resource('carts', CartController::class);
