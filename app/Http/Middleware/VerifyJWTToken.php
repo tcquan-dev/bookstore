@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use RealRashid\SweetAlert\Facades\Alert;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 

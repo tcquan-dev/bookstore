@@ -26,6 +26,7 @@ class Book extends Model
         'author_id',
         'category_id',
         'sale_id',
+        'featured',
         'rate',
         'price',
     ];

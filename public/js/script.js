@@ -69,9 +69,7 @@ $(document).ready(function () {
         }
 
         $("#countdown-clock").each(function () {
-            const deadline = new Date(
-                Date.parse(new Date()) + 28 * 24 * 60 * 60 * 1000
-            );
+            const deadline = new Date($(this).data('expiration-date'));
             initializeClock("countdown-clock", deadline);
         });
     };

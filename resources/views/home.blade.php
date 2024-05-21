@@ -59,7 +59,7 @@
                             <div class="banner-content">
                                 <h2>{{ $item->title }}</h2>
                                 <p>Best Offer Save 30%. Grab it now!</p>
-                                <a href="shop.html" class="btn mt-3">Shop Collection</a>
+                                <a href="{{ url('/sales') }}" class="btn mt-3">Shop Collection</a>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -130,27 +130,48 @@
                     <a href="shop.html" class="btn">View All</a>
                 </div>
                 <div class="owl-carousel selling-items">
-                    @foreach ($books as $item)
+                    @foreach ($books->take(12) as $item)
                         <div class="card position-relative p-3 m-3 border rounded-3 shadow-sm">
-                            <div class="position-absolute">
-                                <p class="bg-primary py-1 px-3 fs-6 text-white rounded-2">10% off</p>
-                            </div>
                             <img src="{{ asset('storage/' . $item->image_path) }}" class="img-fluid" alt="book">
                             <h6 class="mt-4 mb-0 fw-bold"><a href="single-product.html">{{ $item->title }}</a>
                             </h6>
                             <div class="review-content d-flex">
                                 <p class="my-2 me-2 fs-6 text-black-50">{{ $item->author->name ?? '' }}</p>
-
-
                             </div>
-                            <span class="price text-primary fw-bold mb-2 fs-5">{{ number_format($item->price) }}
-                                VNĐ</span>
-                            <div class="rating text-warning d-flex align-items-center">
-                                <i class="fa-regular fa-star"></i>
-                                <i class="fa-regular fa-star"></i>
-                                <i class="fa-regular fa-star"></i>
-                                <i class="fa-regular fa-star"></i>
-                                <i class="fa-regular fa-star"></i>
+                            @if (isset($item->sale))
+                                <div class="price text-primary fw-bold fs-5 d-flex align-items-center">
+                                    {{ number_format($item->price - ($item->price * $item->sale->value) / 100) }}
+                                    VNĐ
+                                    <span class="discount-label">-{{ $item->sale->value }}%</span>
+                                </div>
+                                <p class="text-decoration-line-through text-muted mb-0">
+                                    {{ number_format($item->price) }} VNĐ
+                                </p>
+                            @else
+                                <span class="price text-primary fw-bold fs-5">{{ number_format($item->price) }}
+                                    VNĐ</span>
+                            @endif
+                            <div class="rating text-warning d-flex align-items-center mb-3">
+                                @php
+                                    $fullStars = floor($item->rate);
+                                    $halfStar = $item->rate - $fullStars;
+                                @endphp
+
+                                @for ($i = 0; $i < $fullStars; $i++)
+                                    <i class="fa-solid fa-star"></i>
+                                @endfor
+
+                                @if ($halfStar >= 0.5)
+                                    <i class="fa-solid fa-star-half-stroke"></i>
+                                    @for ($i = 0; $i < 4 - $fullStars; $i++)
+                                        <i class="fa-regular fa-star"></i>
+                                    @endfor
+                                @else
+                                    @for ($i = 0; $i < 5 - $fullStars; $i++)
+                                        <i class="fa-regular fa-star"></i>
+                                    @endfor
+                                @endif
+                                <span class="amount px-1">({{ $item->reviews->count() ?? 0 }})</span>
                             </div>
                             <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
                                 <button type="button" href="#" class="btn btn-dark" data-bs-toggle="tooltip"
@@ -167,18 +188,18 @@
             </div>
         </section>
 
-        <section id="limited-offer" class="padding-large"
-            style="background-image: url(images/banner-image-bg-1.jpg); background-size: cover; background-repeat: no-repeat; background-position: center; height: 800px;">
+        <section class="limited-offer py-5">
             <div class="container">
                 <div class="row d-flex align-items-center">
                     <div class="col-md-6 text-center">
                         <div class="image-holder">
-                            <img src="images/banner-image3.png" class="img-fluid" alt="banner">
+                            <img src="{{ asset('storage/' . $sale->image_path) }}" class="img-fluid" alt="banner">
                         </div>
                     </div>
                     <div class="col-md-5 offset-md-1 mt-5 mt-md-0 text-center text-md-start">
-                        <h2>30% Discount on all items. Hurry Up !!!</h2>
-                        <div id="countdown-clock" class="text-dark d-flex align-items-center my-3">
+                        <h2>{{ $sale->name }}</h2>
+                        <div id="countdown-clock" data-expiration-date="{{ $sale->expiration_date }}"
+                            class="text-dark d-flex align-items-center my-3">
                             <div class="time d-grid pe-3">
                                 <span class="days fs-1 fw-normal"></span>
                                 <small>Days</small>
@@ -199,7 +220,7 @@
                                 <small>Sec</small>
                             </div>
                         </div>
-                        <a href="shop.html" class="btn mt-3">Shop Collection</a>
+                        <a href="{{ url('/sales') }}" class="btn mt-3">Shop Collection</a>
                     </div>
                 </div>
             </div>
@@ -214,30 +235,52 @@
                         <div class="section-title overflow-hidden mb-5 mt-2">
                             <h3 class="d-flex flex-column mb-0">Featured</h3>
                         </div>
+
                         <div class="items-lists">
                             @foreach ($books->where('featured', true)->take(3) as $item)
                                 <div class="item my-3 p-3 d-flex flex-column border rounded shadow">
-                                    <div class="book-group d-flex">
+                                    <div class="book-group py-3 d-flex align-items-center">
                                         <img src="{{ asset('storage/' . $item->image_path) }}" class="img-fluid"
                                             alt="product item">
-                                        <div class="book-content">
+                                        <div class="book-content mx-auto">
                                             <h5 class="fw-bold"><a href="single-product.html">{{ $item->title }}</a>
                                             </h5>
                                             <p class="my-2 fs-6 text-black-50">{{ $item->author->name ?? '' }}</p>
                                         </div>
                                     </div>
-                                    <div class="item-content ms-3">
-                                        <span
-                                            class="price text-primary fw-bold fs-5">{{ number_format($item->price - ($item->price * 10) / 100) }}
-                                            VNĐ<p class="text-decoration-line-through text-muted mb-0">
-                                                {{ number_format($item->price) }} VNĐ
-                                            </p></span>
+                                    <div class="item-content">
+                                        @if (isset($item->sale->value))
+                                            <span
+                                                class="price text-primary fw-bold fs-5">{{ number_format($item->price - ($item->price * $item->sale->value) / 100) }}
+                                                VNĐ<p class="text-decoration-line-through text-muted mb-0">
+                                                    {{ number_format($item->price) }} VNĐ
+                                                </p></span>
+                                        @else
+                                            <span
+                                                class="price text-primary fw-bold fs-5">{{ number_format($item->price) }}
+                                                VNĐ</span>
+                                        @endif
                                         <div class="rating text-warning d-flex align-items-center my-1">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
+                                            @php
+                                                $fullStars = floor($item->rate);
+                                                $halfStar = $item->rate - $fullStars;
+                                            @endphp
+
+                                            @for ($i = 0; $i < $fullStars; $i++)
+                                                <i class="fa-solid fa-star"></i>
+                                            @endfor
+
+                                            @if ($halfStar >= 0.5)
+                                                <i class="fa-solid fa-star-half-stroke"></i>
+                                                @for ($i = 0; $i < 4 - $fullStars; $i++)
+                                                    <i class="fa-regular fa-star"></i>
+                                                @endfor
+                                            @else
+                                                @for ($i = 0; $i < 5 - $fullStars; $i++)
+                                                    <i class="fa-regular fa-star"></i>
+                                                @endfor
+                                            @endif
+                                            <span class="amount px-1">({{ $item->reviews->count() ?? 0 }})</span>
                                         </div>
                                     </div>
                                 </div>
@@ -255,27 +298,42 @@
                         <div class="items-lists">
                             @foreach ($books->take(3) as $item)
                                 <div class="item my-3 p-3 d-flex flex-column border rounded shadow">
-                                    <div class="book-group d-flex">
+                                    <div class="book-group py-3 d-flex align-items-center">
                                         <img src="{{ asset('storage/' . $item->image_path) }}" class="img-fluid"
                                             alt="product item">
-                                        <div class="book-content">
+                                        <div class="book-content mx-auto">
                                             <h5 class="fw-bold"><a href="single-product.html">{{ $item->title }}</a>
                                             </h5>
                                             <p class="my-2 fs-6 text-black-50">{{ $item->author->name ?? '' }}</p>
                                         </div>
                                     </div>
-                                    <div class="item-content ms-3">
+                                    <div class="item-content">
                                         <span
                                             class="price text-primary fw-bold fs-5">{{ number_format($item->price - ($item->price * 10) / 100) }}
                                             VNĐ<p class="text-decoration-line-through text-muted mb-0">
                                                 {{ number_format($item->price) }} VNĐ
                                             </p></span>
                                         <div class="rating text-warning d-flex align-items-center my-1">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
+                                            @php
+                                                $fullStars = floor($item->rate);
+                                                $halfStar = $item->rate - $fullStars;
+                                            @endphp
+
+                                            @for ($i = 0; $i < $fullStars; $i++)
+                                                <i class="fa-solid fa-star"></i>
+                                            @endfor
+
+                                            @if ($halfStar >= 0.5)
+                                                <i class="fa-solid fa-star-half-stroke"></i>
+                                                @for ($i = 0; $i < 4 - $fullStars; $i++)
+                                                    <i class="fa-regular fa-star"></i>
+                                                @endfor
+                                            @else
+                                                @for ($i = 0; $i < 5 - $fullStars; $i++)
+                                                    <i class="fa-regular fa-star"></i>
+                                                @endfor
+                                            @endif
+                                            <span class="amount px-1">({{ $item->reviews->count() ?? 0 }})</span>
                                         </div>
                                     </div>
                                 </div>
@@ -291,29 +349,44 @@
                         </div>
 
                         <div class="items-lists">
-                            @foreach ($books->take(3) as $item)
+                            @foreach ($books->where('rate', '>=', '4,5')->take(3) as $item)
                                 <div class="item my-3 p-3 d-flex flex-column border rounded shadow">
-                                    <div class="book-group d-flex">
+                                    <div class="book-group py-3 d-flex align-items-center">
                                         <img src="{{ asset('storage/' . $item->image_path) }}" class="img-fluid"
                                             alt="product item">
-                                        <div class="book-content">
+                                        <div class="book-content mx-auto">
                                             <h5 class="fw-bold"><a href="single-product.html">{{ $item->title }}</a>
                                             </h5>
                                             <p class="my-2 fs-6 text-black-50">{{ $item->author->name ?? '' }}</p>
                                         </div>
                                     </div>
-                                    <div class="item-content ms-3">
+                                    <div class="item-content">
                                         <span
                                             class="price text-primary fw-bold fs-5">{{ number_format($item->price - ($item->price * 10) / 100) }}
                                             VNĐ<p class="text-decoration-line-through text-muted mb-0">
                                                 {{ number_format($item->price) }} VNĐ
                                             </p></span>
                                         <div class="rating text-warning d-flex align-items-center my-1">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
+                                            @php
+                                                $fullStars = floor($item->rate);
+                                                $halfStar = $item->rate - $fullStars;
+                                            @endphp
+
+                                            @for ($i = 0; $i < $fullStars; $i++)
+                                                <i class="fa-solid fa-star"></i>
+                                            @endfor
+
+                                            @if ($halfStar >= 0.5)
+                                                <i class="fa-solid fa-star-half-stroke"></i>
+                                                @for ($i = 0; $i < 4 - $fullStars; $i++)
+                                                    <i class="fa-regular fa-star"></i>
+                                                @endfor
+                                            @else
+                                                @for ($i = 0; $i < 5 - $fullStars; $i++)
+                                                    <i class="fa-regular fa-star"></i>
+                                                @endfor
+                                            @endif
+                                            <span class="amount px-1">({{ $item->reviews->count() ?? 0 }})</span>
                                         </div>
                                     </div>
                                 </div>
@@ -331,27 +404,42 @@
                         <div class="items-lists">
                             @foreach ($books->take(3) as $item)
                                 <div class="item my-3 p-3 d-flex flex-column border rounded shadow">
-                                    <div class="book-group d-flex">
+                                    <div class="book-group py-3 d-flex align-items-center">
                                         <img src="{{ asset('storage/' . $item->image_path) }}" class="img-fluid"
                                             alt="product item">
-                                        <div class="book-content">
+                                        <div class="book-content mx-auto">
                                             <h5 class="fw-bold"><a href="single-product.html">{{ $item->title }}</a>
                                             </h5>
                                             <p class="my-2 fs-6 text-black-50">{{ $item->author->name ?? '' }}</p>
                                         </div>
                                     </div>
-                                    <div class="item-content ms-3">
+                                    <div class="item-content">
                                         <span
                                             class="price text-primary fw-bold fs-5">{{ number_format($item->price - ($item->price * 10) / 100) }}
                                             VNĐ<p class="text-decoration-line-through text-muted mb-0">
                                                 {{ number_format($item->price) }} VNĐ
                                             </p></span>
                                         <div class="rating text-warning d-flex align-items-center my-1">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
+                                            @php
+                                                $fullStars = floor($item->rate);
+                                                $halfStar = $item->rate - $fullStars;
+                                            @endphp
+
+                                            @for ($i = 0; $i < $fullStars; $i++)
+                                                <i class="fa-solid fa-star"></i>
+                                            @endfor
+
+                                            @if ($halfStar >= 0.5)
+                                                <i class="fa-solid fa-star-half-stroke"></i>
+                                                @for ($i = 0; $i < 4 - $fullStars; $i++)
+                                                    <i class="fa-regular fa-star"></i>
+                                                @endfor
+                                            @else
+                                                @for ($i = 0; $i < 5 - $fullStars; $i++)
+                                                    <i class="fa-regular fa-star"></i>
+                                                @endfor
+                                            @endif
+                                            <span class="amount px-1">({{ $item->reviews->count() }})</span>
                                         </div>
                                     </div>
                                 </div>
