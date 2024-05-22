@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
@@ -122,17 +121,19 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->hasMany(Review::class);
     }
 
+    /**
+     * Check the role associated with the user.
+     */
     public function hasRole($role)
     {
-        if ($role == $this->role->name)
-            return true;
+        return $this->role->name == $role;
     }
 
-    public function assignRole($name)
+    /**
+     * Check the permission associated with the role.
+     */
+    public function hasPermission($permission)
     {
-        $role = Role::where('name', $name)->first();
-        return $this->update([
-            'role_id' => $role->id
-        ]);
+        return $this->role->permissions->contains('name', $permission);
     }
 }

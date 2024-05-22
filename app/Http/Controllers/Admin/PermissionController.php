@@ -12,6 +12,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  */
 class PermissionController extends CrudController
 {
+    use \App\Traits\CrudPermissionTrait;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
@@ -28,6 +29,7 @@ class PermissionController extends CrudController
         CRUD::setModel(\App\Models\Permission::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/permission');
         CRUD::setEntityNameStrings('permission', 'permissions');
+        $this->setAccessUsingPermissions();
     }
 
     /**

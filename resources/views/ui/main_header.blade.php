@@ -171,7 +171,7 @@
                                                             {{ $user->name }}
                                                         </a>
                                                     </li>
-                                                    @if ($user->role_id == 1)
+                                                    @if ($user->hasRole('admin') || $user->hasRole('staff'))
                                                         <li><a class="dropdown-item py-2"
                                                                 href="{{ route('backpack.dashboard') }}">Dashboard</a>
                                                         </li>
