@@ -956,15 +956,9 @@ th {
     opacity: 0;
     visibility: hidden;
     z-index: 999999;
-    -webkit-transition:
-        opacity 0.3s 0s,
-        visibility 0s 0.3s;
-    -moz-transition:
-        opacity 0.3s 0s,
-        visibility 0s 0.3s;
-    transition:
-        opacity 0.3s 0s,
-        visibility 0s 0.3s;
+    -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    transition: opacity 0.3s 0s, visibility 0s 0.3s;
 }
 .search-popup.is-visible {
     opacity: 1;
@@ -978,15 +972,9 @@ th {
         pointer;
     cursor: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%23000' d='M20 1l-1-1-9 9-9-9-1 1 9 9-9 9 1 1 9-9 9 9 1-1-9-9'/%3E%3C/svg%3E"),
         pointer;
-    -webkit-transition:
-        opacity 0.3s 0s,
-        visibility 0s 0s;
-    -moz-transition:
-        opacity 0.3s 0s,
-        visibility 0s 0s;
-    transition:
-        opacity 0.3s 0s,
-        visibility 0s 0s;
+    -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
+    -moz-transition: opacity 0.3s 0s, visibility 0s 0s;
+    transition: opacity 0.3s 0s, visibility 0s 0s;
 }
 .search-popup-container {
     background-color: transparent;
@@ -1077,14 +1065,8 @@ th {
     position: absolute;
     top: 100%;
     width: 100%;
-    -webkit-transition:
-        height 0.3s,
-        opacity 0.3s,
-        -webkit-transform 0.3s;
-    transition:
-        height 0.3s,
-        opacity 0.3s,
-        transform 0.3s;
+    -webkit-transition: height 0.3s, opacity 0.3s, -webkit-transform 0.3s;
+    transition: height 0.3s, opacity 0.3s, transform 0.3s;
     -webkit-transform: translateY(-5px);
     transform: translateY(-5px);
 }
@@ -1294,9 +1276,8 @@ th {
 
 /* 4.5 Items Listings
 /*----------------------------------------------*/
-#items-listing img {
-    max-width: 80px;
-    max-height: 90px;
+.items-listing img {
+    max-height: 100px;
 }
 
 /*------------Swiper Pagination -----------*/
@@ -1453,4 +1434,35 @@ select#input-sort {
 
 .form-check-input {
     box-shadow: none !important;
+}
+
+.limited-offer,
+.customers-reviews {
+    background-image: url(/images/banner-image-bg-1.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+.amount {
+    color: #cdcfd0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.discount-label {
+    border-radius: 4px;
+    background-color: #dc3545;
+    color: #fff;
+    margin-left: 5px;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.best-selling-items .owl-carousel .card {
+    height: 580px;
 }

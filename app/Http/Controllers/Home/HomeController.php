@@ -1,10 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Home;
 
 use Exception;
+use App\Models\Sale;
+use App\Models\Book;
 use App\Models\Profile;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
@@ -12,8 +17,10 @@ class HomeController extends Controller
     public function index()
     {
         $user = backpack_auth()->user();
-        $books = $user->cart->books ?? array();
-        return view('home', compact('user', 'books'));
+        $books = Book::latest('updated_at')->get();
+        $sale = Sale::latest('updated_at')->first();
+        $categories = Category::latest('updated_at')->get();
+        return view('home', compact('user', 'books', 'categories', 'sale'));
     }
 
     public function getProfileForm()

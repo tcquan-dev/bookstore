@@ -17,9 +17,10 @@ return new class extends Migration
             $table->integer('category_id')->nullable();
             $table->integer('author_id')->nullable();
             $table->string('title');
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->string('image_path')->nullable();
-            $table->integer('rate')->nullable();
+            $table->boolean('featured')->default(false);
+            $table->float('rate')->nullable();
             $table->float('price', 11, 0)->default(0);
             $table->timestamps();
         });
