@@ -173,14 +173,15 @@
                                 @endif
                                 <span class="amount px-1">({{ $item->reviews->count() ?? 0 }})</span>
                             </div>
-                            <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
-                                <button type="button" href="#" class="btn btn-dark" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-title="Tooltip on top">
-                                    <i class="fa-solid fa-cart-shopping fa-xl"></i>
+                            <div class="card-group">
+                                <button class="btn cart-btn" data-book-id="{{ $item->id }}">
+                                    <span class="add-to-cart">
+                                        <i class="fa-solid fa-cart-plus fa-2xl"></i>
+                                    </span>
+                                    <span class="added">Added</span>
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <i class="fas fa-box"></i>
                                 </button>
-                                <a href="#" class="btn btn-dark">
-                                    <i class="fa-regular fa-heart fa-xl"></i>
-                                </a>
                             </div>
                         </div>
                     @endforeach

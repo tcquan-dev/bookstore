@@ -104,54 +104,7 @@
                                             <i class="fa-solid fa-magnifying-glass fa-lg"></i>
                                         </a>
                                     </li>
-
-                                    <li class="cart-dropdown dropdown pe-3">
-                                        <div class="dropdown-toggle" data-bs-toggle="dropdown" role="button"
-                                            aria-expanded="false">
-                                            <div class="cart-icon-container">
-                                                <i class="fa-solid fa-shopping-cart fa-lg"></i>
-                                                @if (isset($user->cart->books))
-                                                    <span class="cart-item-count">{{ count($user->cart->books) }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div
-                                            class="dropdown-menu animate slide dropdown-menu-start dropdown-menu-lg-end p-3">
-                                            <div class="d-flex flex-column">
-                                                <h4 class="text-primary">Giỏ hàng của tôi</h4>
-                                                @if (isset($user->cart->books))
-                                                    <ul class="list-group mb-3">
-                                                        @foreach ($user->cart->books as $item)
-                                                            <li class="list-group-item">
-                                                                <div class="d-flex">
-                                                                    <img class="img-thumbnail w-25"
-                                                                        src="{{ isset($item->image_path) ? asset('storage/' . $item->image_path) : '' }} "
-                                                                        alt="Book">
-                                                                    <a class="m-2" href="single-product.html">
-                                                                        <h5>{{ $item->title }}</h5>
-                                                                    </a>
-                                                                </div>
-                                                                <p class="text-primary text-end">
-                                                                    {{ number_format($item->price) . ' VNĐ' }}</p>
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
-                                                    <div class="d-flex justify-content-around">
-                                                        <a href="{{ url('carts') }}" class="btn btn-primary"
-                                                            type="submit">Xem
-                                                            giỏ hàng</a>
-                                                        <a href="checkout.html" class="btn btn-primary"
-                                                            type="submit">Thanh toán</a>
-                                                    </div>
-                                                @else
-                                                    <img class="img-fluid w-50 mx-auto"
-                                                        src="https://cdni.iconscout.com/illustration/premium/thumb/empty-cart-7359557-6024626.png"
-                                                        alt="Cart">
-                                                    <p class="text-center">Chưa có sản phẩm trong giỏ hàng.</p>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </li>
+                                    @include('carts.list')
                                     <li class="pe-3">
                                         <div class="dropdown">
                                             <a class="dropdown-toggle" href="#" role="button"
@@ -176,6 +129,9 @@
                                                                 href="{{ route('backpack.dashboard') }}">Dashboard</a>
                                                         </li>
                                                     @endif
+                                                    <li><a class="dropdown-item py-2"
+                                                            href="{{ route('orders.index') }}">Đơn hàng</a>
+                                                    </li>
                                                     <li><a class="dropdown-item py-2"
                                                             href="{{ route('backpack.auth.logout') }}">Đăng xuất</a>
                                                     </li>

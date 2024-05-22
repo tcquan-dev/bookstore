@@ -13,7 +13,8 @@ class SaleController extends Controller
     public function index()
     {
         $user = backpack_auth()->user();
+        $cart = $user->cart ?? array();
         $books = Book::whereNotNull('sale_id')->latest('updated_at')->get();
-        return view('sales.index', compact('user', 'books'));
+        return view('sales.index', compact('user', 'books', 'cart'));
     }
 }
