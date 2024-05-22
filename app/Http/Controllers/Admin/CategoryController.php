@@ -55,7 +55,16 @@ class CategoryController extends CrudController
         CRUD::setFromDb();
         CRUD::field('image_path')->type('upload')->withFiles([
             'disk' => 'public',
-            'path' => 'image_path'
+            'path' => 'images'
+        ]);
+        CRUD::addField([
+            'label'     => 'Books',
+            'type'      => 'select_multiple',
+            'name'      => 'books',
+            'entity'    => 'books',
+            'model'     => 'App\Models\Book',
+            'attribute' => 'title',
+            'pivot'     => true
         ]);
     }
 

@@ -2,8 +2,8 @@
 @basset('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css')
 @basset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css')
 @basset('https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css')
-
 @basset(base_path('vendor/backpack/crud/src/resources/assets/css/common.css'))
+<link rel="icon" href="https://www.blobmaker.app/icons/icon-48x48.png?v=d2064a4d23cc375c9a373bc2d9f2aa35">
 
 @if (backpack_theme_config('styles') && count(backpack_theme_config('styles')))
     @foreach (backpack_theme_config('styles') as $path)

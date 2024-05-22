@@ -21,7 +21,8 @@ class Sale extends Model
         'name',
         'description',
         'image_path',
-        'value'
+        'value',
+        'expiration_date'
     ];
 
     /**
