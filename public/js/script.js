@@ -69,106 +69,10 @@ $(document).ready(function () {
         }
 
         $("#countdown-clock").each(function () {
-            const deadline = new Date(
-                Date.parse(new Date()) + 28 * 24 * 60 * 60 * 1000,
-            );
+            const deadline = new Date($(this).data('expiration-date'));
             initializeClock("countdown-clock", deadline);
         });
     };
-
-    var initProductQty = function () {
-        $(".product-qty").each(function () {
-            var $el_product = $(this);
-            var quantity = 0;
-
-            $el_product.find(".quantity-right-plus").click(function (e) {
-                e.preventDefault();
-                var quantity = parseInt($el_product.find("#quantity").val());
-                $el_product.find("#quantity").val(quantity + 1);
-            });
-
-            $el_product.find(".quantity-left-minus").click(function (e) {
-                e.preventDefault();
-                var quantity = parseInt($el_product.find("#quantity").val());
-                if (quantity > 0) {
-                    $el_product.find("#quantity").val(quantity - 1);
-                }
-            });
-        });
-    };
-
-    $(document).ready(function () {
-        searchPopup();
-        initProductQty();
-        countdownTimer();
-
-        /* Video */
-        var $videoSrc;
-        $(".play-btn").click(function () {
-            $videoSrc = $(this).data("src");
-        });
-
-        $("#myModal").on("shown.bs.modal", function (e) {
-            $("#video").attr(
-                "src",
-                $videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0",
-            );
-        });
-
-        $("#myModal").on("hide.bs.modal", function (e) {
-            $("#video").attr("src", $videoSrc);
-        });
-
-        var mainSwiper = new Swiper(".main-swiper", {
-            speed: 500,
-            navigation: {
-                nextEl: ".main-slider-button-next",
-                prevEl: ".main-slider-button-prev",
-            },
-        });
-
-        var productSwiper = new Swiper(".product-swiper", {
-            spaceBetween: 20,
-            navigation: {
-                nextEl: ".product-slider-button-next",
-                prevEl: ".product-slider-button-prev",
-            },
-            breakpoints: {
-                0: {
-                    slidesPerView: 1,
-                },
-                660: {
-                    slidesPerView: 3,
-                },
-                980: {
-                    slidesPerView: 4,
-                },
-                1500: {
-                    slidesPerView: 5,
-                },
-            },
-        });
-
-        var testimonialSwiper = new Swiper(".testimonial-swiper", {
-            slidesPerView: 1,
-            spaceBetween: 20,
-            navigation: {
-                nextEl: ".testimonial-button-next",
-                prevEl: ".testimonial-button-prev",
-            },
-        });
-
-        var thumb_slider = new Swiper(".thumb-swiper", {
-            slidesPerView: 1,
-        });
-        var large_slider = new Swiper(".large-swiper", {
-            spaceBetween: 10,
-            effect: "fade",
-            thumbs: {
-                swiper: thumb_slider,
-            },
-        });
-    }); // End of a document ready
 
     $(document).on("click", "#button-plus", function () {
         var $parent = $(this).closest(".row.align-items-center");
@@ -265,7 +169,7 @@ $(document).ready(function () {
                     type: "DELETE",
                     headers: {
                         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                            "content",
+                            "content"
                         ),
                     },
                     success: function (response) {
@@ -339,4 +243,31 @@ $(document).ready(function () {
         };
         reader.readAsDataURL(file);
     });
+
+    $(".banner-items").owlCarousel({
+        items: 1,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+    });
+
+    $(".selling-items").owlCarousel({
+        items: 3,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+    });
+
+    $(".review-items").owlCarousel({
+        items: 3,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+    });
+
+    searchPopup();
+    countdownTimer();
 });
