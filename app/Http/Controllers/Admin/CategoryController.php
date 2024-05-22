@@ -58,11 +58,11 @@ class CategoryController extends CrudController
             'path' => 'images'
         ]);
         CRUD::addField([
-            'label'     => "Books",
+            'label'     => 'Books',
             'type'      => 'select_multiple',
             'name'      => 'books',
             'entity'    => 'books',
-            'model'     => "App\Models\Book",
+            'model'     => 'App\Models\Book',
             'attribute' => 'title',
             'pivot'     => true
         ]);
