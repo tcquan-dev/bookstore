@@ -328,8 +328,4 @@ $(document).ready(function () {
             },
         });
     });
-
-
-
-
 });
