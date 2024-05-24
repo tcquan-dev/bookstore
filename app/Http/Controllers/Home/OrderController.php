@@ -15,13 +15,7 @@ class OrderController extends Controller
     public function index()
     {
         $user = backpack_auth()->user();
-        $orders = $user->orders()->latest('updated_at')->get()->each(function ($order) {
-            $order->books->each(function ($book) {
-                $book->quantity = $book->pivot->quantity;
-                $book->discount = $book->pivot->discount;
-                $book->price = $book->pivot->price;
-            });
-        });
+        $orders = $user->orders()->latest('updated_at')->get();
         return view('orders.index', compact('user', 'orders'));
     }
 
@@ -38,14 +32,14 @@ class OrderController extends Controller
             $address = $addresses->firstWhere('default', 1);
         }
         $total = 0;
-        $cart->books->each(function ($item) use (&$total) {
-            $price = $item->price;
-            $quantity = $item->pivot->quantity;
-            $discount = $item->sale ? ($price * $item->sale->value / 100) : 0;
-            $item->discount = $discount;
-            $item->quantity = $quantity;
-            $item->total_price = ($price - $discount) * $quantity;
-            $total += $item->total_price;
+        $cart->books->each(function ($book) use (&$total) {
+            $price = $book->price;
+            $quantity = $book->pivot->quantity;
+            $discount = $book->sale ? ($price * $book->sale->value / 100) : 0;
+            $book->discount = $discount;
+            $book->quantity = $quantity;
+            $book->total_price = ($price - $discount) * $quantity;
+            $total += $book->total_price;
         });
 
         return view('orders.create', compact('user', 'cart', 'addresses', 'address', 'total'));
@@ -70,11 +64,11 @@ class OrderController extends Controller
 
             $order = Order::create($orderData);
 
-            $cart->books->each(function ($item) use (&$order) {
-                $order->books()->attach($item->id, [
-                    'quantity' => $item->pivot->quantity,
-                    'price' => $item->price,
-                    'discount' => $item->sale ? ($item->price * $item->sale->value / 100) : 0
+            $cart->books->each(function ($book) use (&$order) {
+                $order->books()->attach($book->id, [
+                    'quantity' => $book->pivot->quantity,
+                    'price' => $book->price,
+                    'discount' => $book->sale ? ($book->price * $book->sale->value / 100) : 0
                 ]);
             });
 
@@ -90,5 +84,15 @@ class OrderController extends Controller
                 'message' => $e->getMessage()
             ]);
         }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $user = backpack_auth()->user();
+        $order = $user->orders->find($id);
+        return view('orders.detail', compact('user', 'order'));
     }
 }

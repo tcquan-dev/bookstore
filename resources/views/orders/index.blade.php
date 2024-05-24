@@ -25,12 +25,12 @@
                                     <td class="col-5 text-center align-middle">
                                         <span class="card-title col-3">{{ $item->title }}</span>
                                     </td>
-                                    <td class="col-2 text-center align-middle">{{ $item->quantity }}</td>
+                                    <td class="col-2 text-center align-middle">{{ $item->pivot->quantity }}</td>
                                     <td class="col-3 text-center align-middle">
-                                        {{ number_format($item->price - $item->discount) }} VNĐ
+                                        {{ number_format($item->price - $item->pivot->discount) }} VNĐ
                                         @if ($item->sale)
                                             <p class="text-decoration-line-through text-muted mb-0">
-                                                {{ number_format($item->price) }} VNĐ
+                                                {{ number_format($item->pivot->price) }} VNĐ
                                             </p>
                                         @endif
                                     </td>
