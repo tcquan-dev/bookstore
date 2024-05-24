@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('address_id');
             $table->integer('status_id')->default(1);
             $table->integer('total_price');
+            $table->boolean('reviewed')->default(false);
             $table->timestamps();
         });
     }

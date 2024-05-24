@@ -40,6 +40,14 @@ class Book extends Model
     }
 
     /**
+     * Get the orders associated with the book.
+     */
+    public function orders(): BelongsToMany
+    {
+        return $this->belongsToMany(Order::class)->withPivot('quantity', 'price', 'discount');
+    }
+
+    /**
      * Get the author associated with the book.
      */
     public function author(): BelongsTo

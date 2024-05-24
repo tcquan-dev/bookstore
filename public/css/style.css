@@ -267,15 +267,6 @@ h6 {
 /*--------------------------------------------------------------
 /** 2.3 Buttons
 --------------------------------------------------------------*/
-.btn {
-    font-weight: 500;
-    text-transform: capitalize;
-    letter-spacing: 0.09em;
-    color: var(--white-color);
-    background-color: var(--primary-color);
-    border: none;
-    cursor: pointer;
-}
 .btn:hover,
 .btn:focus-visible,
 .btn-check:checked + .btn,
@@ -309,15 +300,10 @@ h6 {
 /** 3.1 Form Control
 --------------------------------------------------------------*/
 .form-control {
-    padding: 1rem;
-    font-size: 21px;
-    font-weight: 300;
-    letter-spacing: 0.01rem;
-    line-height: normal;
+    margin: 0.5rem 0;
 }
 .form-control:focus {
     box-shadow: none;
-    border-color: #131814;
 }
 input.form-control::placeholder,
 textarea.form-control::placeholder {
@@ -1251,27 +1237,19 @@ th {
 
 /* 4.4 Product
 /*----------------------------------------------*/
-.card-concern {
-    text-align: center;
-    bottom: 145px;
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: all 0.3s ease-out;
+.card-group {
+    position: absolute;
+    bottom: 0;
     opacity: 0;
+    width: 100%;
+    justify-content: center;
+    transition: all 0.5s ease-out;
 }
-.card-concern .btn {
-    padding: 1.125rem;
-}
-.card-concern svg {
-    width: 27px;
-    height: 27px;
-    cursor: pointer;
-}
-.card:hover .card-concern {
-    bottom: 160px;
+
+.card:hover .card-group {
+    bottom: 50%;
     opacity: 1;
+    transition: all 0.5s ease-in;
 }
 
 /* 4.5 Items Listings
@@ -1465,4 +1443,173 @@ select#input-sort {
 
 .best-selling-items .owl-carousel .card {
     height: 580px;
+}
+
+.cart-btn {
+    position: relative;
+    width: 50%;
+    height: 60px;
+    border: 0;
+    border-radius: 4px;
+    outline: none;
+    color: #fff;
+    transition: 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.cart-btn:active {
+    transform: scale(0.9);
+}
+
+.cart-btn .fa-shopping-cart {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: -10%;
+    font-size: 2em;
+    transform: translate(-50%, -50%);
+}
+.cart-btn .fa-box {
+    position: absolute;
+    z-index: 3;
+    top: -20%;
+    left: 52%;
+    font-size: 1.2em;
+    transform: translate(-50%, -50%);
+}
+.cart-btn span {
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    top: 50%;
+    color: #fff;
+    transform: translate(-50%, -50%);
+}
+.cart-btn span.add-to-cart {
+    opacity: 1;
+}
+.cart-btn span.added {
+    opacity: 0;
+}
+
+.cart-btn.clicked .fa-shopping-cart {
+    animation: cart 1.5s ease-in-out forwards;
+}
+.cart-btn.clicked .fa-box {
+    animation: box 1.5s ease-in-out forwards;
+}
+.cart-btn.clicked span.add-to-cart {
+    animation: txt1 1.5s ease-in-out forwards;
+}
+.cart-btn.clicked span.added {
+    animation: txt2 1.5s ease-in-out forwards;
+}
+@keyframes cart {
+    0% {
+        left: -10%;
+    }
+    40%,
+    60% {
+        left: 50%;
+    }
+    100% {
+        left: 110%;
+    }
+}
+@keyframes box {
+    0%,
+    40% {
+        top: -20%;
+    }
+    60% {
+        top: 40%;
+        left: 52%;
+    }
+    100% {
+        top: 40%;
+        left: 112%;
+    }
+}
+@keyframes txt1 {
+    0% {
+        opacity: 1;
+    }
+    20%,
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes txt2 {
+    0%,
+    80% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.line {
+    background-image: repeating-linear-gradient(
+        45deg,
+        #6fa6d6,
+        #6fa6d6 33px,
+        transparent 0,
+        transparent 41px,
+        #f18d9b 0,
+        #f18d9b 74px,
+        transparent 0,
+        transparent 82px
+    );
+    background-position-x: -30px;
+    background-size: 116px 3px;
+    height: 3px;
+    width: 100%;
+}
+
+.custom-radio {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+}
+
+.custom-radio input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+}
+
+.custom-radio input:checked ~ .checkmark {
+    background-color: #2196F3;
+    border: 1px solid #2196F3;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.custom-radio input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.custom-radio .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
 }

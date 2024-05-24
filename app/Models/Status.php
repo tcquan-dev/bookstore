@@ -18,8 +18,9 @@ class Status extends Model
     protected $fillable = [
         'name'
     ];
+
     /**
-     * Get the user that owns a cart.
+     * Get the order associated with the status.
      */
     public function order(): HasOne
     {

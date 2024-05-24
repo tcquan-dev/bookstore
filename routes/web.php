@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Home\SaleController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\CartController;
+use App\Http\Controllers\Home\OrderController;
 use App\Http\Controllers\Home\AddressController;
 
 /*
@@ -24,7 +25,8 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/profiles/update', 'updateProfile')->name('profiles.update');
 });
 Route::resource('addresses', AddressController::class);
-Route::resource('carts', CartController::class);
 Route::controller(SaleController::class)->group(function () {
     Route::get('sales', 'index');
 });
+Route::resource('carts', CartController::class)->middleware('auth.backpack');
+Route::resource('orders', OrderController::class);
