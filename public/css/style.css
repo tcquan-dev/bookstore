@@ -429,17 +429,18 @@ th {
 
 /* Preloader */
 #preloader {
+    display: none;
     background: #fff;
     opacity: 0.8;
     height: 100%;
     position: fixed;
     width: 100%;
     top: 0;
-    z-index: 99999999;
+    z-index: 999;
     transition: 0.2s ease-in-out;
 }
-#preloader.hide-preloader {
-    display: none;
+#preloader.show {
+    display: block;
 }
 
 .book {
@@ -1139,16 +1140,6 @@ th {
 .navbar-nav .nav-item a.nav-link:focus,
 .navbar-nav .nav-item a.nav-link:hover {
     color: var(--primary-color);
-}
-.modal {
-    --bs-modal-zindex: 99999;
-}
-.modal-dialog {
-    max-width: 800px;
-    margin: auto;
-    height: 100vh;
-    display: flex;
-    align-items: center;
 }
 .dropdown-menu {
     --bs-dropdown-link-active-color: var(--primary-color);

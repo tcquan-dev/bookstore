@@ -55,7 +55,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                <button type="button" class="btn btn-primary" id="cart-form-btn" data-cart-id="{{ $cart->id }}">
+                <button type="button" class="btn btn-primary" id="order-form-btn" data-order-id="{{ $order->id }}">
                     Save changes
                 </button>
             </div>

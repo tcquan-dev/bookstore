@@ -35,7 +35,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                <button type="button" class="btn btn-primary" id="address-submit-btn"
+                <button type="button" class="btn btn-primary" id="cart-address-btn"
                     data-cart-id="{{ $cart->id }}">
                     Save changes
                 </button>

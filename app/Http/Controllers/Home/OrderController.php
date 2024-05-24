@@ -93,6 +93,33 @@ class OrderController extends Controller
     {
         $user = backpack_auth()->user();
         $order = $user->orders->find($id);
-        return view('orders.detail', compact('user', 'order'));
+        $addresses = $user->addresses;
+        $address = $order->address;
+        return view('orders.detail', compact('user', 'order', 'addresses', 'address'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        try {
+            $user = backpack_auth()->user();
+            $order = $user->orders->find($id);
+
+            $order->update([
+                'address_id' => $request->post('address_id')
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Cập nhật địa chỉ giao hàng thành công!'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 }

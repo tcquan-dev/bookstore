@@ -1,6 +1,29 @@
 @extends('ui.layout')
 
 @section('content')
+    <div class="line"></div>
+    <div class="address-group border shadow-sm mb-3 p-3">
+
+        <div class="text-primary fw-bold">
+            <i class="fa-solid fa-location-dot"></i>
+            <span> Địa chỉ nhận hàng</span>
+        </div>
+        <div class="d-flex px-3 align-items-center" data-address-id="{{ $address->id }}">
+            <div class="address-title fw-bold">{{ $address->name }}
+                @if ($address->default)
+                    <span class="badge bg-primary"> Default</span>
+                @endif
+                <p>{{ $address->phone_number }}</p>
+            </div>
+            <p class="address-text mx-auto">{{ $address->address }}</p>
+            @if ($order->hasStatus('Pending'))
+                <div class="btn btn-primary text-uppercase mx-3 px-3 py-2" data-bs-toggle="modal"
+                    data-bs-target="#listAddress">
+                    Change</div>
+            @endif
+        </div>
+
+    </div>
     <div class="card flex-row shadow-sm my-3">
         <div class="card-body">
             <div class="d-flex flex-column justify-content-center">
@@ -52,6 +75,7 @@
             </div>
         </div>
     </div>
+    @include('orders.order_address')
 @endsection
 @section('script')
     <script type="text/javascript" src="{{ asset('js/order.js') }}"></script>

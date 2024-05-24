@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    @include('ui.preloader')
     @include('ui.main_header')
     <div class="container">
         @yield('content')

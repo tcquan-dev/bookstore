@@ -83,7 +83,7 @@
             </div>
         </div>
     </form>
-    @include('orders.modal')
+    @include('orders.cart_address')
 @endsection
 @section('script')
     <script type="text/javascript" src="{{ asset('js/order.js') }}"></script>
