@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Home;
 
 use Exception;
 use App\Models\Order;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -76,7 +77,7 @@ class OrderController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Đặt hàng thành công!'
+                'message' => 'Thank you for ordering!'
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -107,13 +108,39 @@ class OrderController extends Controller
             $user = backpack_auth()->user();
             $order = $user->orders->find($id);
 
-            $order->update([
-                'address_id' => $request->post('address_id')
-            ]);
+            if ($request->has('address_id')) {
+                $order->update([
+                    'address_id' => $request->post('address_id')
+                ]);
+            }
 
             return response()->json([
                 'success' => true,
-                'message' => 'Cập nhật địa chỉ giao hàng thành công!'
+                'message' => 'Order updated successfully!'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        try {
+            $user = backpack_auth()->user();
+            $order = $user->orders->find($id);
+            $status = Status::where('name', 'canceled')->first();
+            $order->update([
+                'status_id' => $status->id
+            ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Order canceled successfully!'
             ]);
         } catch (Exception $e) {
             return response()->json([

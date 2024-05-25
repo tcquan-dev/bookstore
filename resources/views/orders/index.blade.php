@@ -2,11 +2,11 @@
 
 @section('content')
     @foreach ($orders as $order)
-        <a href="{{ url('/orders/' . $order->id) }}">
-            <div class="card flex-row shadow-sm my-3">
-                <div class="card-body">
-                    <div class="d-flex flex-column justify-content-center">
-                        <span class="text-primary text-end text-uppercase my-3">{{ $order->status->name }}</span>
+        <div class="card flex-row shadow-sm my-3">
+            <div class="card-body">
+                <div class="d-flex flex-column justify-content-center">
+                    <a href="{{ url('/orders/' . $order->id) }}">
+                        <div class="text-primary text-end text-uppercase my-3">{{ $order->status->name }}</div>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -39,23 +39,23 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="text-end">Total: <span
-                                class="text-primary fw-bold">{{ number_format($order->total_price) }}
-                                VNĐ</span></div>
-                        @if ($order->hasStatus('Pending'))
-                            <div class="text-end ml-3">
-                                <button class="btn btn-danger my-3 px-3 py-2">Cancel</button>
-                            </div>
-                        @endif
-                        @if ($order->hasStatus('Completed') && !$order->reviewed)
-                            <div class="text-end ml-3">
-                                <button class="btn btn-primary my-3 px-3 py-2">Review</button>
-                            </div>
-                        @endif
-                    </div>
+                    </a>
+                    <div class="text-end">Total: <span class="text-primary fw-bold">{{ number_format($order->total_price) }}
+                            VNĐ</span></div>
+                    @if ($order->hasStatus('Pending'))
+                        <div class="text-end ml-3">
+                            <button class="btn btn-danger my-3 px-3 py-2" id="order-cancel-btn"
+                                data-order-id="{{ $order->id }}">Cancel</button>
+                        </div>
+                    @endif
+                    @if ($order->hasStatus('Completed') && !$order->reviewed)
+                        <div class="text-end ml-3">
+                            <button class="btn btn-primary my-3 px-3 py-2">Review</button>
+                        </div>
+                    @endif
                 </div>
             </div>
-        </a>
+        </div>
     @endforeach
 @endsection
 @section('script')

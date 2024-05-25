@@ -64,7 +64,8 @@
                         VNĐ</span></div>
                 @if ($order->hasStatus('Pending'))
                     <div class="text-end ml-3">
-                        <button class="btn btn-danger my-3 px-3 py-2">Cancel</button>
+                        <button class="btn btn-danger my-3 px-3 py-2" id="order-cancel-btn"
+                            data-order-id="{{ $order->id }}">Cancel</button>
                     </div>
                 @endif
                 @if ($order->hasStatus('Completed') && !$order->reviewed)

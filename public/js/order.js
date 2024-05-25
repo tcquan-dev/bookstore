@@ -28,8 +28,8 @@ $(document).on("click", "#cart-form-btn", function () {
                     success: function (response) {
                         if (response.success) {
                             $("#addressForm").modal("hide");
-                            $('#preloader').addClass('show');
-                            setTimeout(function() {
+                            $("#preloader").addClass("show");
+                            setTimeout(function () {
                                 location.reload();
                             }, 500);
                         } else {
@@ -74,8 +74,8 @@ $(document).on("click", "#order-form-btn", function () {
                     success: function (response) {
                         if (response.success) {
                             $("#addressForm").modal("hide");
-                            $('#preloader').addClass('show');
-                            setTimeout(function() {
+                            $("#preloader").addClass("show");
+                            setTimeout(function () {
                                 location.reload();
                             }, 500);
                         } else {
@@ -132,8 +132,8 @@ $(document).on("click", "#cart-address-btn", function () {
         success: function (response) {
             if (response.success) {
                 $("#listAddress").modal("hide");
-                $('#preloader').addClass('show');
-                setTimeout(function() {
+                $("#preloader").addClass("show");
+                setTimeout(function () {
                     location.reload();
                 }, 500);
             } else {
@@ -159,13 +159,51 @@ $(document).on("click", "#order-address-btn", function () {
         success: function (response) {
             if (response.success) {
                 $("#listAddress").modal("hide");
-                $('#preloader').addClass('show');
-                setTimeout(function() {
+                $("#preloader").addClass("show");
+                setTimeout(function () {
                     location.reload();
                 }, 500);
             } else {
                 swal("Error", response.message, "error");
             }
         },
+    });
+});
+
+$(document).on("click", "#order-cancel-btn", function () {
+    let orderId = $(this).data("order-id");
+
+    swal({
+        title: "Are you sure you want to cancel this order?",
+        icon: "warning",
+        buttons: {
+            cancel: "No",
+            confirm: "Yes",
+        },
+    }).then((result) => {
+        if (result) {
+            $.ajax({
+                url: "/orders/" + orderId,
+                type: "DELETE",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                success: function (response) {
+                    if (response.success) {
+                        swal("Success", response.message, "success").then(
+                            (result) => {
+                                if (result) {
+                                    window.location.href = "/orders";
+                                }
+                            }
+                        );
+                    } else {
+                        swal("Error", response.message, "error");
+                    }
+                },
+            });
+        }
     });
 });
