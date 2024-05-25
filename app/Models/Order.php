@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
 {
@@ -25,7 +27,7 @@ class Order extends Model
     ];
 
     /**
-     * Get the user that owns the profile.
+     * Get the user associated with the order.
      */
     public function user(): BelongsTo
     {
@@ -46,5 +48,29 @@ class Order extends Model
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
+    }
+
+    /**
+     * Get the books associated with the order.
+     */
+    public function books(): BelongsToMany
+    {
+        return $this->belongsToMany(Book::class)->withPivot('quantity', 'price', 'discount');
+    }
+
+    /**
+     * Check the status associated with the order.
+     */
+    public function hasStatus($status)
+    {
+        return $this->status->name == $status;
+    }
+
+    /**
+     * Get the voucher associated with the order.
+     */
+    public function voucher(): HasOne
+    {
+        return $this->hasOne(User::class);
     }
 }

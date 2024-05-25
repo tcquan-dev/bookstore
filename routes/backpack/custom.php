@@ -23,4 +23,5 @@ Route::group([
     Route::crud('author', 'AuthorController');
     Route::crud('category', 'CategoryController');
     Route::crud('sale', 'SaleController');
+    Route::crud('voucher', 'VoucherController');
 });

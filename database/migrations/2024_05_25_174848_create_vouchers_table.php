@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('verifications', function (Blueprint $table) {
+        Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->string('token');
-            $table->dateTime('expired_in');
+            $table->string('name');
+            $table->string('description')->nullable();
+            $table->string('image_path')->nullable();
+            $table->integer('value')->default(0);
+            $table->date('expiration_date')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('verifications');
+        Schema::dropIfExists('vouchers');
     }
 };
