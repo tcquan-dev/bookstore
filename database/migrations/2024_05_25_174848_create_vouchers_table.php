@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
+            $table->string('code')->unique();
             $table->string('image_path')->nullable();
             $table->integer('value')->default(0);
             $table->date('expiration_date')->nullable();

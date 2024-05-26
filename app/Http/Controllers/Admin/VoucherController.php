@@ -57,6 +57,11 @@ class VoucherController extends CrudController
             'disk' => 'public',
             'path' => 'images'
         ]);
+        CRUD::field([
+            'name'  => 'generate',
+            'type'  => 'custom_html',
+            'value' => '<button class="btn btn-primary text-uppercase" id="generate-btn" type="button"><i class="fa-solid fa-dice"></i> Generate</button>'
+        ])->after('code');;
     }
 
     /**

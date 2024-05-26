@@ -20,6 +20,7 @@ class Voucher extends Model
     protected $fillable = [
         'name',
         'description',
+        'code',
         'image_path',
         'value',
         'expiration_date'
