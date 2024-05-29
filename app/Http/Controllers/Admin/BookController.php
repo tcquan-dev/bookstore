@@ -12,6 +12,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  */
 class BookController extends CrudController
 {
+    use \App\Traits\CrudPermissionTrait;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
@@ -28,6 +29,7 @@ class BookController extends CrudController
         CRUD::setModel(\App\Models\Book::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/book');
         CRUD::setEntityNameStrings('book', 'books');
+        $this->setAccessUsingPermissions();
     }
 
     /**
