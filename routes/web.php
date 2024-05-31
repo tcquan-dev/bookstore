@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Home\SaleController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\CartController;
+use App\Http\Controllers\Home\OrderController;
 use App\Http\Controllers\Home\AddressController;
 
 /*
@@ -27,7 +28,5 @@ Route::resource('addresses', AddressController::class);
 Route::controller(SaleController::class)->group(function () {
     Route::get('sales', 'index');
 });
-Route::controller(CartController::class)->group(function () {
-    Route::post('carts', 'store')->middleware('auth.backpack');
-    Route::delete('carts/{id}', 'destroy')->middleware('auth.backpack');
-});
+Route::resource('carts', CartController::class)->middleware('auth.backpack');
+Route::resource('orders', OrderController::class);

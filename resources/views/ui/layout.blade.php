@@ -10,12 +10,14 @@
 </head>
 
 <body>
+    @include('ui.preloader')
     @include('ui.main_header')
     <div class="container">
         @yield('content')
     </div>
     @include('ui.main_footer')
     @include('ui.scripts')
+    @yield('script')
 </body>
 
 </html>

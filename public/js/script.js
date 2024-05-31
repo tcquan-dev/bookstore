@@ -69,7 +69,7 @@ $(document).ready(function () {
         }
 
         $("#countdown-clock").each(function () {
-            const deadline = new Date($(this).data('expiration-date'));
+            const deadline = new Date($(this).data("expiration-date"));
             initializeClock("countdown-clock", deadline);
         });
     };
@@ -88,12 +88,12 @@ $(document).ready(function () {
     });
 
     $(document).on("click", "#button-minus", function () {
+        let id = $(this).data("id");
         let card = $(this).closest(".card");
         let $parent = $(this).closest(".row.align-items-center");
         let price = parseFloat($parent.find("#price-value").val());
         let $quantityInput = $parent.find(".quantity-input");
         let quantity = parseInt($quantityInput.val());
-
         if (quantity > 1) {
             quantity--;
             $quantityInput.val(quantity);
@@ -106,12 +106,29 @@ $(document).ready(function () {
                 text: "Hành động này không thể hoàn tác!",
                 icon: "warning",
                 buttons: {
-                    cancel: "Hủy",
+                    cancel: "Huỷ",
                     confirm: "Có",
                 },
             }).then((result) => {
                 if (result) {
-                    card.remove();
+                    $.ajax({
+                        url: "/carts/" + id,
+                        type: "DELETE",
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                $(".cart-dropdown").replaceWith(response.data);
+                                swal("Success", response.message, "success");
+                                card.remove();
+                            } else {
+                                swal("Error", response.message, "error");
+                            }
+                        },
+                    });
                 }
             });
         }
@@ -138,7 +155,7 @@ $(document).ready(function () {
                 if (response.success) {
                     swal("Success", response.message, "success");
                     $("#addressModal").modal("hide");
-                    $("#content-toggle").html(response.html);
+                    $("#content-toggle").html(response.data);
                     $("#list-address")
                         .removeClass("fade")
                         .addClass("show")
@@ -159,7 +176,7 @@ $(document).ready(function () {
             text: "Hành động này không thể hoàn tác!",
             icon: "warning",
             buttons: {
-                cancel: "Hủy",
+                cancel: "Huỷ",
                 confirm: "Có",
             },
         }).then((result) => {
@@ -197,7 +214,9 @@ $(document).ready(function () {
             },
             success: function (response) {
                 if (response.success) {
-                    $("#addressModal .modal-content").html(response.form);
+                    $("#addressModal .modal-content").replaceWith(
+                        response.form
+                    );
                 } else {
                     swal("Error", response.message, "error");
                 }
@@ -270,4 +289,43 @@ $(document).ready(function () {
 
     searchPopup();
     countdownTimer();
+
+    $(document).on("click", ".cart-btn", function () {
+        $(this).toggleClass("clicked");
+        let bookId = $(this).data("book-id");
+
+        $.ajax({
+            url: "/carts",
+            method: "POST",
+            data: {
+                book_id: bookId,
+                quantity: 1,
+            },
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {
+                if (response.success) {
+                    $(".cart-dropdown").replaceWith(response.data);
+                } else {
+                    swal("Error", response.message, "error");
+                }
+            },
+            error: function () {
+                swal({
+                    title: "Unauthorized",
+                    text: "Bạn chưa đăng nhập. Vui lòng đăng nhập để tiếp tục.",
+                    icon: "warning",
+                    buttons: {
+                        cancel: "Hủy",
+                        confirm: "Đăng nhập",
+                    },
+                }).then((result) => {
+                    if (result) {
+                        window.location.href = "/admin/login";
+                    }
+                });
+            },
+        });
+    });
 });
