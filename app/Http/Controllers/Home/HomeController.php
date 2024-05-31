@@ -17,10 +17,11 @@ class HomeController extends Controller
     public function index()
     {
         $user = backpack_auth()->user();
+        $cart = $user->cart ?? array();
         $books = Book::latest('updated_at')->get();
         $sale = Sale::latest('updated_at')->first();
         $categories = Category::latest('updated_at')->get();
-        return view('home', compact('user', 'books', 'categories', 'sale'));
+        return view('home', compact('user', 'books', 'categories', 'sale', 'cart'));
     }
 
     public function getProfileForm()

@@ -27,8 +27,7 @@ class CheckIfAdmin
      */
     private function checkIfUserIsAdmin($user)
     {
-        return ($user->role_id == 1);
-        // return true;
+        return ($user->hasRole('admin') || $user->hasRole('staff'));
     }
 
     /**

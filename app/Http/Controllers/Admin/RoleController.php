@@ -12,6 +12,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  */
 class RoleController extends CrudController
 {
+    use \App\Traits\CrudPermissionTrait;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
@@ -28,7 +29,7 @@ class RoleController extends CrudController
         CRUD::setModel(\App\Models\Role::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/role');
         CRUD::setEntityNameStrings('role', 'roles');
-        $this->setupListOperation();
+        $this->setAccessUsingPermissions();
     }
 
     /**
@@ -60,11 +61,11 @@ class RoleController extends CrudController
         ]);
         CRUD::setFromDb();
         CRUD::addField([
-            'label'     => "Permissions",
+            'label'     => 'Permissions',
             'type'      => 'select_multiple',
             'name'      => 'permissions',
             'entity'    => 'permissions',
-            'model'     => "App\Models\Permission",
+            'model'     => 'App\Models\Permission',
             'attribute' => 'name',
             'pivot'     => true
         ]);
