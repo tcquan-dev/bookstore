@@ -6,13 +6,12 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class SaleCrudController
+ * Class VoucherCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class SaleController extends CrudController
+class VoucherController extends CrudController
 {
-    use \App\Traits\CrudPermissionTrait;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
@@ -26,10 +25,9 @@ class SaleController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Sale::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/sale');
-        CRUD::setEntityNameStrings('sale', 'sales');
-        $this->setAccessUsingPermissions();
+        CRUD::setModel(\App\Models\Voucher::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/voucher');
+        CRUD::setEntityNameStrings('voucher', 'vouchers');
     }
 
     /**
@@ -59,15 +57,11 @@ class SaleController extends CrudController
             'disk' => 'public',
             'path' => 'images'
         ]);
-        CRUD::addField([
-            'label'     => 'Books',
-            'type'      => 'select_multiple',
-            'name'      => 'books',
-            'entity'    => 'books',
-            'model'     => 'App\Models\Book',
-            'attribute' => 'title',
-            'pivot'     => true
-        ]);
+        CRUD::field([
+            'name'  => 'generate',
+            'type'  => 'custom_html',
+            'value' => '<button class="btn btn-primary text-uppercase" id="generate-btn" type="button"><i class="fa-solid fa-dice"></i> Generate</button>'
+        ])->after('code');;
     }
 
     /**

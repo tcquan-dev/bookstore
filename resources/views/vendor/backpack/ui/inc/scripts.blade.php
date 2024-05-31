@@ -29,4 +29,5 @@
 
 @push('after_scripts')
     @basset(base_path('vendor/backpack/crud/src/resources/assets/js/common.js'))
+    @basset(asset('js/generate.js'))
 @endpush
